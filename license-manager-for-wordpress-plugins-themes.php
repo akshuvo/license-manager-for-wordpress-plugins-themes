@@ -22,6 +22,7 @@ include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 
 define( 'LMFWPPT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'LMFWPPT_PLUGIN_VERSION', '1.0' );
 
 /**
  *	EDDNSTANT Functions
@@ -107,6 +108,11 @@ final class LMFWPPT {
 	*/
 	function plugin_activation() {
 
+        if ( ! get_option( 'lmfwppt_installed' ) ) {
+            update_option( 'lmfwppt_installed', time() );
+        }
+
+        update_option( 'lmfwppt_plugin_version', LMFWPPT_PLUGIN_VERSION );
 	}
 
 	/**
