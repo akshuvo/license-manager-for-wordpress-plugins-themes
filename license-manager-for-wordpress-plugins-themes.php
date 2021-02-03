@@ -71,7 +71,7 @@ final class LMFWPPT {
 	 */
 	function action_links( $links ) {
 		$plugin_links = array(
-			'<a href="' . admin_url( 'admin.php?page=lmfwppt&tab=1' ) . '">' . esc_html__( 'Lisence Manager', 'lmfwppt' ) . '</a>',
+			'<a href="' . admin_url( 'admin.php?page=license-manager-wppt' ) . '">' . esc_html__( 'License Manager', 'lmfwppt' ) . '</a>',
 		);
 		return array_merge( $plugin_links, $links );
 	}
@@ -82,6 +82,10 @@ final class LMFWPPT {
 	function plugin_loaded_action() {
 		// Loading Text Domain for Internationalization
 		load_plugin_textdomain( 'lmfwppt', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
+
+		require_once( dirname( __FILE__ ) . '/admin/functions.php' );
+		require_once( dirname( __FILE__ ) . '/admin/Menu.php' );
+		require_once( dirname( __FILE__ ) . '/admin/License_List.php' );
 
 	}
 
@@ -113,6 +117,28 @@ final class LMFWPPT {
         }
 
         update_option( 'lmfwppt_plugin_version', LMFWPPT_PLUGIN_VERSION );
+
+       	global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $schema = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}license_manager` (
+          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+          `name` varchar(100) NOT NULL DEFAULT '',
+          `product_type` varchar(30) DEFAULT NULL,
+          `product_data` varchar(30) DEFAULT NULL,
+          `licenses` varchar(30) DEFAULT NULL,
+          `extras` varchar(30) DEFAULT NULL,
+          `created_by` bigint(20) unsigned NOT NULL,
+          `created_at` datetime NOT NULL,
+          PRIMARY KEY (`id`)
+        ) $charset_collate";
+
+        if ( ! function_exists( 'dbDelta' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+        }
+
+        dbDelta( $schema );
 	}
 
 	/**
