@@ -26,11 +26,15 @@ class LMFWPPT_Menu {
             __( 'License manager', 'lmfwppt' ),
             $capability,
             $parent_slug,
-            [ $this, 'plugin_page' ],
+            [ $this, 'plugins_page' ],
             'dashicons-tickets-alt'
         );
 
-        add_submenu_page( $parent_slug, __( 'License manager for WordPress Themes and Plugins', 'lmfwppt' ), __( 'Licenses', 'lmfwppt' ), $capability, $parent_slug, [ $this, 'plugin_page' ] );
+        add_submenu_page( $parent_slug, __( 'Plugins - License manager for WordPress Themes and Plugins', 'lmfwppt' ), __( 'Plugins', 'lmfwppt' ), $capability, $parent_slug, [ $this, 'plugins_page' ] );
+
+        add_submenu_page( $parent_slug, __( 'Themes - License manager for WordPress Themes and Plugins', 'lmfwppt' ), __( 'Themes', 'lmfwppt' ), $capability, $parent_slug.'-themes', [ $this, 'themes_page' ] );
+
+        add_submenu_page( $parent_slug, __( 'License manager for WordPress Themes and Plugins', 'lmfwppt' ), __( 'Licenses', 'lmfwppt' ), $capability, $parent_slug.'-licenses', [ $this, 'licenses_page' ] );
 
         add_submenu_page( $parent_slug, __( 'Settings', 'lmfwppt' ), __( 'Settings', 'lmfwppt' ), $capability, 'lmfwppt-settings', [ $this, 'settings_page' ] );
 
@@ -38,30 +42,96 @@ class LMFWPPT_Menu {
     }
 
     /**
-     * Handles the pages
+     * Handles Plugin pages
      *
      * @return void
      */
-    public function plugin_page() {
+    public function plugins_page() {
         $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
         $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
 
         switch ( $action ) {
             case 'new':
-                $template = __DIR__ . '/views/new.php';
+                $template = __DIR__ . '/views/plugins/new.php';
                 break;
 
             case 'edit':
                 $address  = wd_ac_get_address( $id );
-                $template = __DIR__ . '/views/edit.php';
+                $template = __DIR__ . '/views/plugins/edit.php';
                 break;
 
             case 'view':
-                $template = __DIR__ . '/views/view.php';
+                $template = __DIR__ . '/views/plugins/view.php';
                 break;
 
             default:
-                $template = __DIR__ . '/views/list.php';
+                $template = __DIR__ . '/views/plugins/list.php';
+                break;
+        }
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
+    }
+
+    /**
+     * Handles Theme pages
+     *
+     * @return void
+     */
+    public function themes_page() {
+        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
+        $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+
+        switch ( $action ) {
+            case 'new':
+                $template = __DIR__ . '/views/themes/new.php';
+                break;
+
+            case 'edit':
+                $address  = wd_ac_get_address( $id );
+                $template = __DIR__ . '/views/themes/edit.php';
+                break;
+
+            case 'view':
+                $template = __DIR__ . '/views/themes/view.php';
+                break;
+
+            default:
+                $template = __DIR__ . '/views/themes/list.php';
+                break;
+        }
+
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
+    }
+
+    /**
+     * Handles Theme pages
+     *
+     * @return void
+     */
+    public function licenses_page() {
+        $action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
+        $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+
+        switch ( $action ) {
+            case 'new':
+                $template = __DIR__ . '/views/licenses/new.php';
+                break;
+
+            case 'edit':
+                $address  = wd_ac_get_address( $id );
+                $template = __DIR__ . '/views/licenses/edit.php';
+                break;
+
+            case 'view':
+                $template = __DIR__ . '/views/licenses/view.php';
+                break;
+
+            default:
+                $template = __DIR__ . '/views/licenses/list.php';
                 break;
         }
 
