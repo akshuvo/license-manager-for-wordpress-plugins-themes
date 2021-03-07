@@ -55,8 +55,7 @@ class LMFWPPT_Menu {
                 $template = __DIR__ . '/views/plugins/new.php';
                 break;
 
-            case 'edit':
-                $address  = wd_ac_get_address( $id );
+            case 'edit':                
                 $template = __DIR__ . '/views/plugins/edit.php';
                 break;
 
@@ -88,8 +87,7 @@ class LMFWPPT_Menu {
                 $template = __DIR__ . '/views/themes/new.php';
                 break;
 
-            case 'edit':
-                $address  = wd_ac_get_address( $id );
+            case 'edit':                
                 $template = __DIR__ . '/views/themes/edit.php';
                 break;
 
@@ -122,7 +120,6 @@ class LMFWPPT_Menu {
                 break;
 
             case 'edit':
-                $address  = wd_ac_get_address( $id );
                 $template = __DIR__ . '/views/licenses/edit.php';
                 break;
 
@@ -146,7 +143,7 @@ class LMFWPPT_Menu {
      * @return void
      */
     public function settings_page() {
-        echo 'Settings Page';
+        echo 'Settings Page Coming Soon';
     }
 
     /**
