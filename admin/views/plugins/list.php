@@ -1,5 +1,12 @@
+<?php
+global $wpdb;
+$table = $wpdb->prefix.'license_manager';
+$query  = "SELECT id,name FROM {$table}";
+$license_manager = $wpdb->get_results( $query, ARRAY_A );
+
+?>
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?php _e( 'License Manager', 'lmfwppt' ); ?></h1>
+    <h1 class="wp-heading-inline"><?php _e( 'License Manager: Plugins', 'lmfwppt' ); ?></h1>
 
     <a href="<?php echo admin_url( 'admin.php?page=license-manager-wppt&action=new' ); ?>" class="page-title-action"><?php _e( 'Add New License', 'lmfwppt' ); ?></a>
 
@@ -15,12 +22,11 @@
         </div>
     <?php } ?>
 
-    <form action="" method="post">
-        <?php
-        $table = new License_Manager_WPPT_List();
-        $table->prepare_items();
-        $table->search_box( 'search', 'search_id' );
-        $table->display();
-        ?>
-    </form>
+    <div class="lmfwppt-ul">
+        <?php foreach ( $license_manager as $key => $data ) : ?>
+            <div class="lmfwppt-li">
+                <a href="<?php echo admin_url( 'admin.php?page=license-manager-wppt' ); ?>&action=edit&id=<?php esc_attr_e( $data['id'] ); ?>"><h4><?php _e( $data['name'] ); ?></h4></a>
+            </div>
+        <?php endforeach;?>
+    </div>
 </div>

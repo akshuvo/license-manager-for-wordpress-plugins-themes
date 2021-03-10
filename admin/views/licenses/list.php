@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?php _e( 'License Manager', 'lmfwppt' ); ?></h1>
+    <h1 class="wp-heading-inline"><?php _e( 'License Manager: Licenses', 'lmfwppt' ); ?></h1>
 
     <a href="<?php echo admin_url( 'admin.php?page=license-manager-wppt&action=new' ); ?>" class="page-title-action"><?php _e( 'Add New License', 'lmfwppt' ); ?></a>
 
@@ -15,7 +15,7 @@
         </div>
     <?php } ?>
 
-    <form action="" method="post">
+    <form class="lmfwppt-list-wrapper" method="post">
         <?php
         $table = new License_Manager_WPPT_List();
         $table->prepare_items();
