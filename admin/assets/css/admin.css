@@ -60,3 +60,69 @@
 .lmfwppt-file-field input {
     margin-right: 3px;
 }
+
+.lmfwppt_license_field .hndle {
+    cursor: pointer !IMPORTANT;
+    position: relative;
+}
+
+.postbox.opened .indicator_field {
+    transform: rotateZ(180deg);
+}
+
+.indicator_field {
+    float: right;
+    position: absolute;
+    right: 30px;
+    top: 0;
+    line-height: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 30px;
+    justify-content: center;
+    font-size: 16px;
+    transition: all .3s ease;
+}
+
+.indicator_field:before {
+    content: "\f347";
+}
+
+span.delete_field {
+    float: right;
+    position: absolute;
+    right: 0;
+    top: 0;
+    line-height: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 30px;
+    justify-content: center;
+    border-left: 1px solid #ccd0d4;
+    cursor: pointer;
+}
+
+span.delete_field:hover{
+    border-color: #dc3545;
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.lmfwppt-toggle-wrap {
+    border-top: 1px solid #ccd0d4;
+    display:none;
+}
+
+.lmfwppt-toggle-head {
+    display: block;
+}
+
+.postbox.lmfwppt_license_field {
+    margin-bottom: 5px;
+}
+
+.lmfwppt_license_field .hndle:hover {
+    background-color: #f9f9f9;
+}

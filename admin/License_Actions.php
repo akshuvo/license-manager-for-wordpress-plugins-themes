@@ -5,14 +5,20 @@
  */
 class License_Manager_WPPT_Actions {
 
+    /**
+     * Initialize the class
+     */
+    function __construct() {
+        $this->add_form_handler();
+    }
 
     /**
      * Handle the form
      *
      * @return void
      */
-    public function form_handler() {
-        if ( ! isset( $_POST['submit_address'] ) ) {
+    public function add_form_handler() {
+        if ( ! isset( $_POST['lmaction'] ) ) {
             return;
         }
 
@@ -24,43 +30,24 @@ class License_Manager_WPPT_Actions {
             wp_die( 'Are you cheating?' );
         }
 
-        $id      = isset( $_POST['id'] ) ? intval( $_POST['id'] ) : 0;
-        $name    = isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : '';
-        $address = isset( $_POST['address'] ) ? sanitize_textarea_field( $_POST['address'] ) : '';
-        $phone   = isset( $_POST['phone'] ) ? sanitize_text_field( $_POST['phone'] ) : '';
+        global $wpdb;
+        $table = $wpdb->prefix.'lmfwppt_products';
+        $data = $_POST['lmfwppt'];
 
-        if ( empty( $name ) ) {
-            $this->errors['name'] = __( 'Please provide a name', 'wedevs-academy' );
-        }
+        $license_package = ( $data['license_package'] ) ? $data['license_package'] : array();
+        $data['license_package'] = serialize($license_package);
 
-        if ( empty( $phone ) ) {
-            $this->errors['phone'] = __( 'Please provide a phone number.', 'wedevs-academy' );
-        }
+        $data['created_at'] = date('Y-m-d H:i:s');
 
-        if ( ! empty( $this->errors ) ) {
-            return;
-        }
-
-        $args = [
-            'name'    => $name,
-            'address' => $address,
-            'phone'   => $phone
-        ];
-
-        if ( $id ) {
-            $args['id'] = $id;
-        }
-
-        $insert_id = wd_ac_insert_address( $args );
+        $wpdb->insert( $table, $data );
+        $insert_id = $wpdb->insert_id;
 
         if ( is_wp_error( $insert_id ) ) {
             wp_die( $insert_id->get_error_message() );
         }
 
-        if ( $id ) {
-            $redirected_to = admin_url( 'admin.php?page=wedevs-academy&action=edit&address-updated=true&id=' . $id );
-        } else {
-            $redirected_to = admin_url( 'admin.php?page=wedevs-academy&inserted=true' );
+        if ( $insert_id ) {
+            $redirected_to = admin_url( 'admin.php?page=license-manager-wppt&action=edit&id=' . $insert_id );
         }
 
         wp_redirect( $redirected_to );
@@ -88,3 +75,4 @@ class License_Manager_WPPT_Actions {
         exit;
     }
 }
+new License_Manager_WPPT_Actions();
