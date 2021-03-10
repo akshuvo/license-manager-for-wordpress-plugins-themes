@@ -1,3 +1,62 @@
 /**
  * Admin CSS for License Manager
  */
+
+.lmwppt-wrap, .lmwppt-wrap * {
+    box-sizing: border-box;
+}
+
+.lmwppt-inner-card {
+    background: rgb(255, 255, 255);
+    border-radius: 3px;
+    border: 1px solid rgb(226, 228, 231);
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.lmfwppt-form-field {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.lmfwppt-form-field label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 3px;
+    color: #646970;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.lmfwppt-form-field input,
+.lmfwppt-form-field select {
+  background-color: #fff;
+  border: 1px solid #a7aaad;
+  border-radius: 3px;
+  height: 56px;
+  padding: 12px;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin: 0;
+  width: 100%;
+}
+
+.lmfwppt-form-field select {
+	min-width: 100%;
+}
+
+.lmfwppt-file-field {
+    display: flex;
+    align-items: center;
+}
+
+.lmfwppt-file-field button {
+    height: 56px;
+    width: 150px;
+}
+
+.lmfwppt-file-field input {
+    margin-right: 3px;
+}

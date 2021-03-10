@@ -55,7 +55,7 @@ class LMFWPPT_Menu {
                 $template = __DIR__ . '/views/plugins/new.php';
                 break;
 
-            case 'edit':                
+            case 'edit':
                 $template = __DIR__ . '/views/plugins/edit.php';
                 break;
 
@@ -87,7 +87,7 @@ class LMFWPPT_Menu {
                 $template = __DIR__ . '/views/themes/new.php';
                 break;
 
-            case 'edit':                
+            case 'edit':
                 $template = __DIR__ . '/views/themes/edit.php';
                 break;
 
@@ -152,6 +152,8 @@ class LMFWPPT_Menu {
      * @return void
      */
     public function enqueue_assets() {
+        wp_enqueue_media();
+
         //wp_enqueue_style( 'academy-admin-style' );
         //wp_enqueue_script( 'academy-admin-script' );
     }
