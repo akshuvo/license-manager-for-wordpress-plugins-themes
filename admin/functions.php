@@ -163,3 +163,13 @@ function lmfwppt_single_license_field( $args ){
 
     return do_action( 'lmfwppt_license_field_after_wrap', $output, $args );
 }
+
+/**
+ * Get Product details by id
+ */
+function lmfwppt_get_product_by_id( $id = null ){
+    global $wpdb;
+
+    $query = "SELECT * FROM {$wpdb->prefix}lmfwppt_products WHERE id = '".$id."'";
+    return $wpdb->get_results( $query, ARRAY_A )[0];
+}

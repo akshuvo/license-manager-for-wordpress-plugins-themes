@@ -47,7 +47,7 @@ class License_Manager_WPPT_Actions {
         }
 
         if ( $insert_id ) {
-            $redirected_to = admin_url( 'admin.php?page=license-manager-wppt&action=edit&id=' . $insert_id );
+            $redirected_to = admin_url( 'admin.php?page=license-manager-wppt&action=edit&added=true&id=' . $insert_id );
         }
 
         wp_redirect( $redirected_to );
