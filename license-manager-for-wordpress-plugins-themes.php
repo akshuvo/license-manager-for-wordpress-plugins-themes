@@ -122,7 +122,19 @@ final class LMFWPPT {
 
         $charset_collate = $wpdb->get_charset_collate();
 
-        $schema = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}license_manager` (
+        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_products` (
+          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+          `name` varchar(100) NOT NULL DEFAULT '',
+          `product_type` varchar(30) DEFAULT NULL,
+          `product_data` varchar(30) DEFAULT NULL,
+          `licenses` varchar(30) DEFAULT NULL,
+          `extras` varchar(30) DEFAULT NULL,
+          `created_by` bigint(20) unsigned NOT NULL,
+          `created_at` datetime NOT NULL,
+          PRIMARY KEY (`id`)
+        ) $charset_collate";
+
+        $schema[] = "CREATE TABLE  `{$wpdb->prefix}lmfwppt_licenses` (
           `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
           `name` varchar(100) NOT NULL DEFAULT '',
           `product_type` varchar(30) DEFAULT NULL,
