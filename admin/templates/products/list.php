@@ -1,6 +1,6 @@
 <?php
 global $wpdb;
-$table = $wpdb->prefix.'license_manager_products';
+$table = $wpdb->prefix.'lmfwppt_products';
 $query  = "SELECT id,name FROM {$table}";
 $products = $wpdb->get_results( $query, ARRAY_A );
 

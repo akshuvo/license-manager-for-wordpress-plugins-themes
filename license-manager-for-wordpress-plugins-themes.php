@@ -85,8 +85,8 @@ final class LMFWPPT {
 
 		require_once( dirname( __FILE__ ) . '/admin/functions.php' );
 		require_once( dirname( __FILE__ ) . '/admin/Menu.php' );
-		//require_once( dirname( __FILE__ ) . '/admin/License_List.php' );
-		require_once( dirname( __FILE__ ) . '/admin/License_Actions.php' );
+		require_once( dirname( __FILE__ ) . '/admin/DBMigration.php' );
+		//require_once( dirname( __FILE__ ) . '/admin/License_Actions.php' );
 
 	}
 
@@ -119,49 +119,6 @@ final class LMFWPPT {
 
         update_option( 'lmfwppt_plugin_version', LMFWPPT_PLUGIN_VERSION );
 
-       	global $wpdb;
-
-        $charset_collate = $wpdb->get_charset_collate();
-
-        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_products` (
-          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-          `name` varchar(100) NOT NULL DEFAULT '',
-          `slug` varchar(100) NOT NULL DEFAULT '',
-          `product_type` varchar(30) DEFAULT NULL,
-          `version` varchar(30) DEFAULT NULL,
-          `tested` varchar(30) DEFAULT NULL,
-          `requires` varchar(30) DEFAULT NULL,
-          `requires_php` varchar(30) DEFAULT NULL,
-          `download_link` varchar(255) DEFAULT NULL,
-          `license_package` varchar(255) DEFAULT NULL,
-          `extras` varchar(255) DEFAULT NULL,
-          `created_by` bigint(20) unsigned NOT NULL,
-          `created_at` datetime NOT NULL,
-          PRIMARY KEY (`id`)
-        ) $charset_collate";
-
-        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_licenses` (
-          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-          `name` varchar(100) NOT NULL DEFAULT '',
-          `slug` varchar(100) NOT NULL DEFAULT '',
-          `product_type` varchar(30) DEFAULT NULL,
-          `version` varchar(30) DEFAULT NULL,
-          `tested` varchar(30) DEFAULT NULL,
-          `requires` varchar(30) DEFAULT NULL,
-          `requires_php` varchar(30) DEFAULT NULL,
-          `download_link` varchar(255) DEFAULT NULL,
-          `license_package` varchar(255) DEFAULT NULL,
-          `extras` varchar(255) DEFAULT NULL,
-          `created_by` bigint(20) unsigned NOT NULL,
-          `created_at` datetime NOT NULL,
-          PRIMARY KEY (`id`)
-        ) $charset_collate";
-
-        if ( ! function_exists( 'dbDelta' ) ) {
-            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        }
-
-        dbDelta( $schema );
 	}
 
 	/**

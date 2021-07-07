@@ -51,20 +51,13 @@ class LMFWPPT_Menu {
         $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
 
         switch ( $action ) {
-            case 'new':
-                $template = __DIR__ . '/views/plugins/new.php';
-                break;
-
             case 'edit':
-                $template = __DIR__ . '/views/plugins/edit.php';
-                break;
-
-            case 'view':
-                $template = __DIR__ . '/views/plugins/view.php';
+            case 'new':
+                $template = __DIR__ . '/templates/products/new.php';
                 break;
 
             default:
-                $template = __DIR__ . '/views/plugins/list.php';
+                $template = __DIR__ . '/templates/products/list.php';
                 break;
         }
 
@@ -84,19 +77,11 @@ class LMFWPPT_Menu {
 
         switch ( $action ) {
             case 'new':
-                $template = __DIR__ . '/views/themes/new.php';
-                break;
-
-            case 'edit':
-                $template = __DIR__ . '/views/themes/edit.php';
-                break;
-
-            case 'view':
-                $template = __DIR__ . '/views/themes/view.php';
+                $template = __DIR__ . '/templates/products/new.php';
                 break;
 
             default:
-                $template = __DIR__ . '/views/themes/list.php';
+                $template = __DIR__ . '/templates/products/list.php';
                 break;
         }
 
@@ -116,19 +101,11 @@ class LMFWPPT_Menu {
 
         switch ( $action ) {
             case 'new':
-                $template = __DIR__ . '/views/licenses/new.php';
-                break;
-
-            case 'edit':
-                $template = __DIR__ . '/views/licenses/edit.php';
-                break;
-
-            case 'view':
-                $template = __DIR__ . '/views/licenses/view.php';
+                $template = __DIR__ . '/templates/licenses/new.php';
                 break;
 
             default:
-                $template = __DIR__ . '/views/licenses/list.php';
+                $template = __DIR__ . '/templates/licenses/list.php';
                 break;
         }
 
