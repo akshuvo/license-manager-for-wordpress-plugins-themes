@@ -171,5 +171,5 @@ function lmfwppt_get_product_by_id( $id = null ){
     global $wpdb;
 
     $query = "SELECT * FROM {$wpdb->prefix}lmfwppt_products WHERE id = '".$id."'";
-    return $wpdb->get_results( $query, ARRAY_A )[0];
+    return $wpdb->get_row( $query, ARRAY_A );
 }

@@ -10,7 +10,6 @@ class LMFWPPT_Menu {
      */
     function __construct() {
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
-        add_action( 'lmfwppt_license_field_after_wrap', [ $this, 'license_content' ], 10, 2 );
     }
 
     /**
@@ -156,10 +155,6 @@ class LMFWPPT_Menu {
         wp_enqueue_media();
     }
 
-    // License Content Render
-    function license_content( $output, $args ){
-        echo $output;
-    }
 }
 
 new LMFWPPT_Menu();
