@@ -1,7 +1,7 @@
 <?php
 class LMFWPPT_DBMigration {
 	
-	var $db_version = 5; // initial db version, don't use floats
+	var $db_version = 6; // initial db version, don't use floats
     var $db_version_key = "lmfwppt_db_version";
 
 	function __construct(){
@@ -13,7 +13,7 @@ class LMFWPPT_DBMigration {
 	}
 
 	function run_migration(){
-		if ( version_compare(get_option('lmfwppt_db_version',"0"), $this->get_db_version(), '<') ) {
+		if ( version_compare(get_option('lmfwppt_db_version',"0"), $this->get_db_version(), '<') || true ) {
 			global $wpdb;
 
 	        $charset_collate = $wpdb->get_charset_collate();
@@ -35,18 +35,6 @@ class LMFWPPT_DBMigration {
 	          PRIMARY KEY (`id`)
 	        ) $charset_collate";
 
-	        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_license_packages` (
-	          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-	          `product_id` int(11) NOT NULL,
-	          `label` varchar(100) NOT NULL,
-	          `package_id` varchar(100) NOT NULL,
-	          `update_period` int(30) NOT NULL,
-	          `domain_limit` int(30) NOT NULL,
-	          PRIMARY KEY (`id`)
-	          FOREIGN KEY (product_id) REFERENCES {$wpdb->prefix}lmfwppt_products(id)
-
-	        ) $charset_collate";
-
 
 	        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_licenses` (
 	          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -62,6 +50,18 @@ class LMFWPPT_DBMigration {
 	          `extras` varchar(255) DEFAULT NULL,
 	          `created_by` int(20) unsigned NOT NULL,
 	          `dated` datetime NOT NULL DEFAULT NOW(),
+	          PRIMARY KEY (`id`)
+	        ) $charset_collate";
+
+
+
+	        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_license_packages` (
+	          `id` int(11) NOT NULL AUTO_INCREMENT,
+	          `product_id` int(11) NOT NULL,
+	          `label` varchar(100) NOT NULL,
+	          `package_id` varchar(100) NOT NULL,
+	          `update_period` int(30) NOT NULL,
+	          `domain_limit` int(30) NOT NULL,
 	          PRIMARY KEY (`id`)
 	        ) $charset_collate";
 
