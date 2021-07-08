@@ -1,7 +1,7 @@
 <?php
 class LMFWPPT_DBMigration {
 	
-	var $db_version = 2; // initial db version, don't use floats
+	var $db_version = 5; // initial db version, don't use floats
     var $db_version_key = "lmfwppt_db_version";
 
 	function __construct(){
@@ -31,9 +31,22 @@ class LMFWPPT_DBMigration {
 	          `license_package` varchar(255) DEFAULT NULL,
 	          `extras` text(255) DEFAULT NULL,
 	          `created_by` int(20) unsigned NOT NULL,
-	          `created_at` datetime NOT NULL,
+	          `dated` datetime NOT NULL DEFAULT NOW(),
 	          PRIMARY KEY (`id`)
 	        ) $charset_collate";
+
+	        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_license_packages` (
+	          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	          `product_id` int(11) NOT NULL,
+	          `label` varchar(100) NOT NULL,
+	          `package_id` varchar(100) NOT NULL,
+	          `update_period` int(30) NOT NULL,
+	          `domain_limit` int(30) NOT NULL,
+	          PRIMARY KEY (`id`)
+	          FOREIGN KEY (product_id) REFERENCES {$wpdb->prefix}lmfwppt_products(id)
+
+	        ) $charset_collate";
+
 
 	        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_licenses` (
 	          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -48,7 +61,7 @@ class LMFWPPT_DBMigration {
 	          `license_package` varchar(255) DEFAULT NULL,
 	          `extras` varchar(255) DEFAULT NULL,
 	          `created_by` int(20) unsigned NOT NULL,
-	          `created_at` datetime NOT NULL,
+	          `dated` datetime NOT NULL DEFAULT NOW(),
 	          PRIMARY KEY (`id`)
 	        ) $charset_collate";
 

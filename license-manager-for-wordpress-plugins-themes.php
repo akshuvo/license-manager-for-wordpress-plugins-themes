@@ -86,7 +86,7 @@ final class LMFWPPT {
 		require_once( dirname( __FILE__ ) . '/admin/functions.php' );
 		require_once( dirname( __FILE__ ) . '/admin/Menu.php' );
 		require_once( dirname( __FILE__ ) . '/admin/DBMigration.php' );
-		//require_once( dirname( __FILE__ ) . '/admin/License_Actions.php' );
+		require_once( dirname( __FILE__ ) . '/admin/ProductsHandler.php' );
 
 	}
 
