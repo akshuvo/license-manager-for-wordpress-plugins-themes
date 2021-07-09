@@ -13,13 +13,15 @@ class LMFWPPT_DBMigration {
 	}
 
 	function run_migration(){
-		if ( version_compare(get_option('lmfwppt_db_version',"0"), $this->get_db_version(), '<') || false ) {
+		if ( version_compare(get_option('lmfwppt_db_version',"0"), $this->get_db_version(), '<') || 0 ) {
 			global $wpdb;
 
 	        $charset_collate = $wpdb->get_charset_collate();
+	        $table_name_lmfwppt_products = $wpdb->prefix . 'lmfwppt_products';
+			
 
-	        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_products` (
-	          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+	        $schema[] = "CREATE TABLE `{$table_name_lmfwppt_products}` (
+	          `id` int(11) NOT NULL AUTO_INCREMENT,
 	          `name` varchar(100) NOT NULL DEFAULT '',
 	          `slug` varchar(100) NOT NULL DEFAULT '',
 	          `product_type` varchar(30) DEFAULT NULL,
@@ -61,7 +63,8 @@ class LMFWPPT_DBMigration {
 	          `update_period` int(30) NOT NULL,
 	          `domain_limit` int(30) NOT NULL,
 	          PRIMARY KEY (`id`),
-	          UNIQUE (`package_id`)
+	          UNIQUE (`package_id`),
+	          FOREIGN KEY (`product_id`) REFERENCES `{$table_name_lmfwppt_products}` (`id`)
 	        ) $charset_collate";
 
 	        if ( ! function_exists( 'dbDelta' ) ) {
