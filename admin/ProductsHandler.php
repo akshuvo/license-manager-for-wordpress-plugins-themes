@@ -58,7 +58,7 @@ class LMFWPPT_ProductsHandler {
 
         // Array key
         //$key =  isset( $args['key'] ) ? $args['key'] : "";
-        $key =  wp_generate_password( 3, false );;
+        $key =  !empty( $package_id ) ? $package_id : wp_generate_password( 3, false );;
    
         $field_name = "lmfwppt[license_package][$key]";
 
@@ -150,10 +150,9 @@ class LMFWPPT_ProductsHandler {
                     $this->create_package( $package, $product_id );
                 }
             }
-            echo "<pre>";print_r($product_id);echo "</pre>";
-            echo "<pre>";print_r($_POST);echo "</pre>";
-            exit;
         }
+
+        die();
     }
 
     // Create product function
@@ -171,10 +170,15 @@ class LMFWPPT_ProductsHandler {
             'download_link' => isset($post_data['download_link']) ? sanitize_text_field( $post_data['download_link'] ) : "",
             'created_by' => isset($post_data['created_by']) ? intval( $post_data['created_by'] ) : "",
         );
-        
-        $wpdb->insert( $table, $data);
-        $insert_id = $wpdb->insert_id;
 
+        if ( isset( $post_data['product_id'] ) ) {
+            $insert_id = intval( $post_data['product_id'] );
+            $wpdb->update( $table, $data, array( 'id'=> $insert_id ) );
+        } else {
+            $wpdb->insert( $table, $data);
+            $insert_id = $wpdb->insert_id;
+        }
+        
         return $insert_id ? $insert_id : null;
 
     }
