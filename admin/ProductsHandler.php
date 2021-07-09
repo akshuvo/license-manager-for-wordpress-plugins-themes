@@ -16,7 +16,7 @@ class LMFWPPT_ProductsHandler {
 
         // Product add action
         add_action( 'wp_ajax_product_add_form', [ $this, 'product_add' ] );
-        add_action( 'init', [ $this, 'product_add' ] );
+        //add_action( 'init', [ $this, 'product_add' ] );
     }
 
     // License Package Field add
