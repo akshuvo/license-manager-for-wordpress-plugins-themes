@@ -15,6 +15,7 @@ class LMFWPPT_ProductsHandler {
         add_action( 'wp_ajax_lmfwppt_single_license_field', [ $this, 'license_package_ajax_add_action' ] );
 
         // Product add action
+        add_action( 'wp_ajax_product_add_form', [ $this, 'product_add' ] );
         add_action( 'init', [ $this, 'product_add' ] );
     }
 
@@ -25,7 +26,7 @@ class LMFWPPT_ProductsHandler {
 
         ob_start();
 
-        echo $this->license_package_field( array(
+        echo self::license_package_field( array(
             'key' => $key,
             'thiskey' => $key,
         ) );
@@ -38,9 +39,9 @@ class LMFWPPT_ProductsHandler {
     }
 
     // Single license field
-    function license_package_field( $args ){
+    public static function license_package_field( $args ){
 
-        $label = $support_period = $domain_limit = '';
+        $label = $package_id = $domain_limit = $update_period = '';
 
         $defaults = array (
             'key' => '',
@@ -77,7 +78,7 @@ class LMFWPPT_ProductsHandler {
             <a class="header lmfwppt-toggle-head" data-toggle="collapse">
                 <span id="poststuff">
                     <h2 class="hndle">
-                        <input type="text" class="regular-text" name="<?php esc_attr_e( $field_name ); ?>[label]" placeholder="<?php esc_attr_e( 'License Title: 1yr unlimited domain.', 'lmfwppt' ); ?>" value="<?php esc_attr_e( $label ); ?>" title="<?php esc_attr_e( 'Change title to anything you like. Make sure they are unique.', 'lmfwppt' ); ?>">
+                        <input type="text" class="regular-text" name="<?php esc_attr_e( $field_name ); ?>[label]" placeholder="<?php esc_attr_e( 'License Title: 1yr unlimited domain.', 'lmfwppt' ); ?>" value="<?php esc_attr_e( $label ); ?>" title="<?php esc_attr_e( 'Change title to anything you like. Make sure they are unique.', 'lmfwppt' ); ?>" required />
                         <span class="dashicons indicator_field"></span>
                         <span class="delete_field">&times;</span>
                     </h2>
@@ -139,11 +140,115 @@ class LMFWPPT_ProductsHandler {
         echo $output;
     }
 
+    // Product add form action
     function product_add(){
+        $response = array();
+        $response['success'] = false;
+
         if ( isset( $_POST['lmaction'] ) && $_POST['lmaction'] == "product_add_form" ) {
-            echo "<pre>";print_r($_POST);
+
+            $product_id = isset( $_POST['lmfwppt'] ) ? $this->create_product( $_POST['lmfwppt'] ) : null;
+
+            // Create Packages
+            if ( isset( $_POST['lmfwppt']['license_package'] ) && count( $_POST['lmfwppt']['license_package'] ) > 0 ) {
+                // Delete old data
+                global $wpdb;
+                $wpdb->delete( $wpdb->prefix.'lmfwppt_license_packages', array( 'product_id' => $product_id ) );
+                foreach ( $_POST['lmfwppt']['license_package'] as $package ) {
+                    $this->create_package( $package, $product_id );
+                }
+            }
+            echo "<pre>";print_r($product_id);echo "</pre>";
+            echo "<pre>";print_r($_POST);echo "</pre>";
             exit;
         }
+    }
+
+    // Create product function
+    function create_product( $post_data = array() ){
+        global $wpdb;
+        $table = $wpdb->prefix.'lmfwppt_products';
+        $data = array(
+            'name' => isset($post_data['name']) ? sanitize_text_field( $post_data['name'] ) : "",
+            'slug' => isset($post_data['slug']) ? sanitize_text_field( $post_data['slug'] ) : "",
+            'product_type' => isset($post_data['product_type']) ? sanitize_text_field( $post_data['product_type'] ) : "",
+            'version' => isset($post_data['version']) ? sanitize_text_field( $post_data['version'] ) : "",
+            'tested' => isset($post_data['tested']) ? sanitize_text_field( $post_data['tested'] ) : "",
+            'requires' => isset($post_data['requires']) ? sanitize_text_field( $post_data['requires'] ) : "",
+            'requires_php' => isset($post_data['requires_php']) ? sanitize_text_field( $post_data['requires_php'] ) : "",
+            'download_link' => isset($post_data['download_link']) ? sanitize_text_field( $post_data['download_link'] ) : "",
+            'created_by' => isset($post_data['created_by']) ? intval( $post_data['created_by'] ) : "",
+        );
+        
+        $wpdb->insert( $table, $data);
+        $insert_id = $wpdb->insert_id;
+
+        return $insert_id ? $insert_id : null;
+
+    }
+
+    // Create package function
+    function create_package( $post_data = array(), $product_id = null ){
+        global $wpdb;
+        $table = $wpdb->prefix.'lmfwppt_license_packages';
+
+        $data = array(
+            'product_id' => isset($product_id) ? intval( $product_id ) : null,
+            'label' => isset($post_data['label']) ? sanitize_text_field( $post_data['label'] ) : "",
+            'package_id' => isset($post_data['package_id']) ? sanitize_text_field( $post_data['package_id'] ) : "",
+            'update_period' => isset($post_data['update_period']) ? intval( $post_data['update_period'] ) : "",
+            'domain_limit' => isset($post_data['domain_limit']) ? intval( $post_data['domain_limit'] ) : "",
+        );
+        
+        $wpdb->insert( $table, $data);
+        $insert_id = $wpdb->insert_id;
+
+        return $insert_id ? $insert_id : null;
+    }
+
+    // Get Product details by id
+    public static function get_product( $id = null ){
+
+        if( !$id ){
+            return;
+        }
+
+        global $wpdb;
+
+        $query = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}lmfwppt_products WHERE id = %d", $id);
+        return $wpdb->get_row( $query, ARRAY_A );
+    }
+
+    // Get Product package details by product_id
+    public static function get_packages( $product_id = null ){
+
+        if( !$product_id ){
+            return;
+        }
+
+        global $wpdb;
+
+        $query = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}lmfwppt_license_packages WHERE product_id = %d", $product_id);
+        return $wpdb->get_results( $query, ARRAY_A );
+    }
+
+    // Generate html from packages array
+    public static function get_packages_html( $get_packages = null ){
+        if( !$get_packages ){
+            return;
+        }
+
+        foreach ($get_packages as $package) {
+            self::license_package_field( array(
+                'key' => $package['package_id'],
+                'package_id' => $package['package_id'],
+                'label' => $package['label'],
+                'product_id' => $package['product_id'],
+                'update_period' => $package['update_period'],
+                'domain_limit' => $package['domain_limit']
+            ) );
+        }
+
     }
 
 }

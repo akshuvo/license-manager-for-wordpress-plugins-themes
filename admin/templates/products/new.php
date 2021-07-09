@@ -1,3 +1,15 @@
+<?php
+
+if ( isset( $_GET['action'] ) && $_GET['action'] == "edit" && isset( $_GET['id'] ) ) {
+    $product_id = intval( $_GET['id'] );
+    $get_product = LMFWPPT_ProductsHandler::get_product( $product_id );
+    $get_packages = LMFWPPT_ProductsHandler::get_packages( $product_id );
+
+    ppr( $get_product );
+    ppr( $get_packages );
+}
+
+?>
 <div class="wrap">
     <h1><?php _e( 'New Product License', 'lmfwppt' ); ?></h1>
 
@@ -52,7 +64,7 @@
                 <div class="lmfwppt-form-section" id="license-information">
                     <h2><?php esc_html_e( 'License Packages', 'lmfwppt' ); ?></h2>
                     <div id="license-information-fields">
-
+                        <?php LMFWPPT_ProductsHandler::get_packages_html( $get_packages ); ?>
                     </div>
                     <button class="button add-license-information" type="button"><?php esc_html_e( 'Add License Package', 'lmfwppt' ); ?></button>
                 </div>
@@ -61,7 +73,7 @@
             <div class="lmfwppt-buttons">
                 <input type="hidden" name="lmaction" value="product_add_form">
                 <input type="hidden" name="lmfwppt[created_by]" value="<?php _e( get_current_user_id() ); ?>">
-                <?php wp_nonce_field( 'new-product' ); ?>
+                <?php wp_nonce_field( 'lmfwppt-add-product-nonce' ); ?>
                 <?php submit_button( __( 'Add Product License', 'lmfwppt' ), 'primary', 'submit_product_license' ); ?>
             </div>
         </form>

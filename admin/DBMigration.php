@@ -13,7 +13,7 @@ class LMFWPPT_DBMigration {
 	}
 
 	function run_migration(){
-		if ( version_compare(get_option('lmfwppt_db_version',"0"), $this->get_db_version(), '<') || true ) {
+		if ( version_compare(get_option('lmfwppt_db_version',"0"), $this->get_db_version(), '<') || false ) {
 			global $wpdb;
 
 	        $charset_collate = $wpdb->get_charset_collate();
@@ -28,11 +28,10 @@ class LMFWPPT_DBMigration {
 	          `requires` varchar(30) DEFAULT NULL,
 	          `requires_php` varchar(30) DEFAULT NULL,
 	          `download_link` varchar(255) DEFAULT NULL,
-	          `license_package` varchar(255) DEFAULT NULL,
-	          `extras` text(255) DEFAULT NULL,
 	          `created_by` int(20) unsigned NOT NULL,
 	          `dated` datetime NOT NULL DEFAULT NOW(),
-	          PRIMARY KEY (`id`)
+	          PRIMARY KEY (`id`),
+	          UNIQUE (`slug`)
 	        ) $charset_collate";
 
 
@@ -54,7 +53,6 @@ class LMFWPPT_DBMigration {
 	        ) $charset_collate";
 
 
-
 	        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_license_packages` (
 	          `id` int(11) NOT NULL AUTO_INCREMENT,
 	          `product_id` int(11) NOT NULL,
@@ -62,7 +60,8 @@ class LMFWPPT_DBMigration {
 	          `package_id` varchar(100) NOT NULL,
 	          `update_period` int(30) NOT NULL,
 	          `domain_limit` int(30) NOT NULL,
-	          PRIMARY KEY (`id`)
+	          PRIMARY KEY (`id`),
+	          UNIQUE (`package_id`)
 	        ) $charset_collate";
 
 	        if ( ! function_exists( 'dbDelta' ) ) {
