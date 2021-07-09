@@ -41,34 +41,26 @@ class LMFWPPT_ProductsHandler {
     // Single license field
     public static function license_package_field( $args ){
 
-        $label = $package_id = $domain_limit = $update_period = '';
-
         $defaults = array (
             'key' => '',
-            'selector' => array(),
+            'package_id' => '',
+            'label' => '',
+            'product_id' => '',
+            'update_period' => '',
+            'domain_limit' => ''
         );
 
         // Parse incoming $args into an array and merge it with $defaults
         $args = wp_parse_args( $args, $defaults );
 
-        // Let's extract the array
-        extract( $args['selector'] );
+        // Let's extract the array to variable
+        extract( $args );
 
         // Array key
         //$key =  isset( $args['key'] ) ? $args['key'] : "";
         $key =  wp_generate_password( 3, false );;
-
-        if ( !isset( $args['selector']['wrapper_title'] ) ) {
-            $wrapper_title = __('Wrapper Title', 'lmfwppt');
-        }
-
-        // data_implement_selectors
-        if ( !isset( $args['selector']['data_implement_selectors'] ) ) {
-            $data_implement_selectors = array();
-        }
-
+   
         $field_name = "lmfwppt[license_package][$key]";
-
 
         ob_start();
         do_action( 'lmfwppt_license_field_before_wrap', $args );
