@@ -1,19 +1,14 @@
 <?php 
-namespace admin;
-  
 
 if( !class_exists('WP_List_Table') ){
 	require_once ABSPATH .'wp-admin/includes/class-wp-list-table.php';
 }
-
 
 /**
  *  
  * Product List Table Class
  * 
 */
-
-
 class ProductsListTable extends \WP_List_Table{
 
 	function __construct(){
@@ -28,9 +23,9 @@ class ProductsListTable extends \WP_List_Table{
 	public function get_columns(){
 		return [
 			'cb'     => "<input type='checkbox'/>",
-			'name'   => __('Name','Name'),
-			'slug'   => __('Slug','Slug'),
-			'dated'  => __('Date','Date')
+			'name'   => __('Name','lmfwppt'),
+			'slug'   => __('Slug','lmfwppt'),
+			'dated'  => __('Date','lmfwppt')
 		];
 	}
 
@@ -44,14 +39,13 @@ class ProductsListTable extends \WP_List_Table{
 	// pagination and sortable use this code
     function get_sortable_columns() {
         $sortable_columns = [
-            'name'       => [ 'name', true ],
+            'name' => [ 'name', true ],
             'dated' => [ 'dated', true ],
         ];
 
         return $sortable_columns;
     }
     // pagination and sortable use this code
-
 
 	protected function column_default($item, $column_name){
 		switch ($column_name) {

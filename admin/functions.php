@@ -61,11 +61,6 @@ function lmfwppt_license_count() {
 }
 
 
-
-
-
-// ---------------Alamin-----------------
-
 /**
  * Get the Product
  *
@@ -107,4 +102,9 @@ function product_count(){
   return (int) $wpdb->get_var("SELECT count(id) FROM {$wpdb->prefix}lmfwppt_products");
 }
 
+
+// API URL
+function lmfwppt_api_url(){
+    return apply_filters( 'lmfwppt_api_url', home_url('/') );
+}
 
