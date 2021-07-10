@@ -1,7 +1,7 @@
 <?php
 class LMFWPPT_DBMigration {
 	
-	var $db_version = 6; // initial db version, don't use floats
+	var $db_version = 7; // initial db version, don't use floats
     var $db_version_key = "lmfwppt_db_version";
 
 	function __construct(){
@@ -38,18 +38,10 @@ class LMFWPPT_DBMigration {
 
 
 	        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_licenses` (
-	          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-	          `name` varchar(100) NOT NULL DEFAULT '',
-	          `slug` varchar(100) NOT NULL DEFAULT '',
-	          `product_type` varchar(30) DEFAULT NULL,
-	          `version` varchar(30) DEFAULT NULL,
-	          `tested` varchar(30) DEFAULT NULL,
-	          `requires` varchar(30) DEFAULT NULL,
-	          `requires_php` varchar(30) DEFAULT NULL,
-	          `download_link` varchar(255) DEFAULT NULL,
-	          `license_package` varchar(255) DEFAULT NULL,
-	          `extras` varchar(255) DEFAULT NULL,
-	          `created_by` int(20) unsigned NOT NULL,
+	          `id` int NOT NULL AUTO_INCREMENT,
+	          `license_key` varchar(255) NOT NULL DEFAULT '',
+	          `package_id` varchar(100) NOT NULL,
+	          `order_id` int,
 	          `dated` datetime NOT NULL DEFAULT NOW(),
 	          PRIMARY KEY (`id`)
 	        ) $charset_collate";
