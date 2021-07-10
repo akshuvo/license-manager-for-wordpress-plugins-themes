@@ -84,14 +84,15 @@ function wp_product( $args = [] ) {
 
     $args = wp_parse_args( $args, $defaults );
 
-    $sql = $wpdb->prepare(
+    $product_list = $wpdb->prepare(
             "SELECT * FROM {$wpdb->prefix}lmfwppt_products
             ORDER BY {$args['orderby']} {$args['order']}
             LIMIT %d, %d",
             $args['offset'], $args['number']
     );
 
-    $items = $wpdb->get_results( $sql );
+    $items = $wpdb->get_results( $product_list );
+
     return $items;
 }
 
