@@ -39,7 +39,7 @@ class LMFWPPT_DBMigration {
 
 	        $schema[] = "CREATE TABLE `{$wpdb->prefix}lmfwppt_licenses` (
 	          `id` int NOT NULL AUTO_INCREMENT,
-	          `key` varchar(255) NOT NULL DEFAULT '',
+	          `license_key` varchar(255) NOT NULL DEFAULT '',
 	          `package_id` varchar(100) NOT NULL,
 	          `order_id` int,
 	          `dated` datetime NOT NULL DEFAULT NOW(),

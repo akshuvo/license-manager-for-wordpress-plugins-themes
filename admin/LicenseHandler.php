@@ -9,37 +9,30 @@ class LMFWPPT_LicenseHandler {
      * Initialize the class
      */
     function __construct() {
-        add_action( 'lmfwppt_license_field_after_wrap', [ $this, 'license_content' ], 10, 2 );
         
-        // Add license field ajax
-        add_action( 'wp_ajax_lmfwppt_single_license_field', [ $this, 'license_package_ajax_add_action' ] );
+        //add_action( 'init', [ $this, 'get_license_details' ] );
 
-        // Product add action
-        add_action( 'wp_ajax_product_add_form', [ $this, 'product_add' ] );
-        //add_action( 'init', [ $this, 'product_add' ] );
+        if ( isset( $_GET['license_key'] ) ) {
+            $this->get_license_details( sanitize_text_field( $_GET['license_key'] ) );
+        }
+        
     }
 
     // License Package Field add
-    function license_package_ajax_add_action(){
+    function get_license_details( $license_key = null ){
+        if ( !$license_key ) {
+            return false;
+        }
 
-        $key = sanitize_text_field( $_POST['key'] );
+        global $wpdb;
 
-        ob_start();
+       
+        $package_id = $wpdb->get_var( $wpdb->prepare("SELECT package_id FROM {$wpdb->prefix}lmfwppt_licenses WHERE license_key = %s", $license_key) );
 
-        echo self::license_package_field( array(
-            'key' => $key,
-            'thiskey' => $key,
-        ) );
-
-        $output = ob_get_clean();
-
-        echo $output;
+        ppr( $package_id );
 
         die();
     }
-
-   
-  
 
 }
 
