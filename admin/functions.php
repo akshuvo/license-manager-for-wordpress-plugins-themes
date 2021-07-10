@@ -60,3 +60,8 @@ function lmfwppt_license_count() {
     return $count;
 }
 
+// API URL
+function lmfwppt_api_url(){
+    return apply_filters( 'lmfwppt_api_url', home_url('/') );
+}
+
