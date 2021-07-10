@@ -8,8 +8,6 @@
     		$table = new ProductsListTable();
     		$table->prepare_items();
     		$table->display();
-
-
     	?>
     </form>
 

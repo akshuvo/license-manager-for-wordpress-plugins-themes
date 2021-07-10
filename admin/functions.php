@@ -60,14 +60,12 @@ function lmfwppt_license_count() {
     return $count;
 }
 
-
 /**
  * Get the Product
  *
  * @return Array
  */
-
-function wp_product( $args = [] ) {
+function get_product_list( $args = [] ) {
     global $wpdb;
 
     $defaults = [
@@ -90,7 +88,6 @@ function wp_product( $args = [] ) {
 
     return $items;
 }
-
 
 /**
  * Get the Product Item Count

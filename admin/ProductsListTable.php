@@ -23,8 +23,8 @@ class ProductsListTable extends \WP_List_Table{
 	public function get_columns(){
 		return [
 			'cb'     => "<input type='checkbox'/>",
-			'name'   => __('Name','lmfwppt'),
-			'slug'   => __('Slug','lmfwppt'),
+			'name'   => __('Product Name','lmfwppt'),
+			'slug'   => __('Product Slug','lmfwppt'),
 			'dated'  => __('Date','lmfwppt')
 		];
 	}
@@ -34,7 +34,6 @@ class ProductsListTable extends \WP_List_Table{
      *
      * @return array
      */
-
 
 	// pagination and sortable use this code
     function get_sortable_columns() {
@@ -98,10 +97,9 @@ class ProductsListTable extends \WP_List_Table{
             $args['order']   = $_REQUEST['order'] ;
         }
 
-        $this->items = wp_product($args);
+        $this->items = get_product_list($args);
 
         // pagination and sortable
-
 		$this->set_pagination_args([
 			'total_items' =>product_count(),
             'per_page'    =>$per_page,
