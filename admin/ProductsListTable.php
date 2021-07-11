@@ -1,5 +1,6 @@
 <?php 
 
+
 if( !class_exists('WP_List_Table') ){
 	require_once ABSPATH .'wp-admin/includes/class-wp-list-table.php';
 }
@@ -9,23 +10,23 @@ if( !class_exists('WP_List_Table') ){
  * Product List Table Class
  * 
 */
-class ProductsListTable extends \WP_List_Table{
+class LMFWPPT_ProductsListTable extends \WP_List_Table{
 
 	function __construct(){
 		parent::__construct([
 			'singular' => "product",
-			'plural'   => "products",
-			'ajax'     => false
+			'plural' => "products",
+			'ajax' => false
 		]);
 	}
 
 	// number of column
 	public function get_columns(){
 		return [
-			'cb'     => "<input type='checkbox'/>",
-			'name'   => __('Product Name','lmfwppt'),
-			'slug'   => __('Product Slug','lmfwppt'),
-			'dated'  => __('Date','lmfwppt')
+			'cb' => "<input type='checkbox'/>",
+			'name' => __('Product Name','lmfwppt'),
+			'slug' => __('Product Slug','lmfwppt'),
+			'dated' => __('Date','lmfwppt')
 		];
 	}
 
@@ -75,6 +76,10 @@ class ProductsListTable extends \WP_List_Table{
 		);
 	}
 
+	protected function column_dated($item){
+		return date('j F Y',strtotime($item->dated));
+	}
+
 	public function prepare_items(){
 
 		$column = $this->get_columns();
@@ -84,26 +89,78 @@ class ProductsListTable extends \WP_List_Table{
 		$this->_column_headers = [$column, $hidden, $sortable];
 
 		//  pagination and sortable
-		$per_page     = 2;
+		$per_page     = 10;
         $current_page = $this->get_pagenum();
-        $offset       = ( $current_page - 1 ) * $per_page;
+        $offset = ( $current_page - 1 ) * $per_page;
+
+        $page_url = '';
+        $products = $this->get_product_list();
+        foreach ($products as $results){
+        	if($results->product_type == "plugin"){
+        		$page_url = "license-manager-wppt";
+        	}
+        	else{
+        		$page_url = "license-manager-wppt-themes";
+        	}
+        }
+
         $args = [
             'number' => $per_page,
             'offset' => $offset,
+            'page_url' => $page_url
         ];
 
         if ( isset( $_REQUEST['orderby'] ) && isset( $_REQUEST['order'] ) ) {
             $args['orderby'] = $_REQUEST['orderby'];
-            $args['order']   = $_REQUEST['order'] ;
+            $args['order'] = $_REQUEST['order'] ;
         }
 
-        $this->items = get_product_list($args);
+        $this->items = $this->get_product_list($args);
 
         // pagination and sortable
 		$this->set_pagination_args([
-			'total_items' =>product_count(),
+			'total_items' =>$this->product_count(),
             'per_page'    =>$per_page,
 		]);
 	}
 
+	// Function 
+	/**
+	 * Get the Product
+	 *
+	 * @return Array
+	 */
+	function get_product_list( $args = [] ) {
+	    global $wpdb;
+
+	    $defaults = [
+	        'number' => 20,
+	        'offset' => 0,
+	        'orderby' => 'id',
+	        'order' => 'ASC'
+	    ];
+
+	    $args = wp_parse_args( $args, $defaults );
+
+	    $product_list = $wpdb->prepare(
+	            "SELECT * FROM {$wpdb->prefix}lmfwppt_products
+	            ORDER BY {$args['orderby']} {$args['order']} 
+	            LIMIT %d, %d",
+	            $args['offset'], $args['number']
+	    );
+
+	    $items = $wpdb->get_results( $product_list );
+
+	    return $items;
+	}
+
+	/**
+	 * Get the Product Item Count
+	 *
+	 * @return Int
+	 */
+	function product_count(){
+	  global $wpdb;
+	  return (int) $wpdb->get_var("SELECT count(id) FROM {$wpdb->prefix}lmfwppt_products");
+	}
 }
