@@ -8,12 +8,12 @@ if( !class_exists('WP_List_Table') ){
  * Product List Table Class
  * 
 */
-class LMFWPPT_ProductsListTable extends \WP_List_Table{
+class LMFWPPT_LicenseListTable extends \WP_List_Table{
 
 	function __construct(){
 		parent::__construct([
-			'singular' => "product",
-			'plural' => "products",
+			'singular' => "license",
+			'plural' => "license",
 			'ajax' => false
 		]);
 	}
@@ -22,8 +22,10 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 	public function get_columns(){
 		return [
 			'cb' => "<input type='checkbox'/>",
-			'name' => __('Product Name','lmfwppt'),
-			'slug' => __('Product Slug','lmfwppt'),
+			'id' => __('ID', 'lmfwppt'),
+			'license_key' => __('License Key','lmfwppt'),
+			'package_id' => __('Package Id','lmfwppt'),
+			'order_id' => __('Order Id','lmfwppt'),
 			'dated' => __('Date','lmfwppt')
 		];
 	}
@@ -37,7 +39,7 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 	// pagination and sortable use this code
     function get_sortable_columns() {
         $sortable_columns = [
-            'name' => [ 'name', true ],
+            'id' => [ 'id', true ],
             'dated' => [ 'dated', true ],
         ];
 
@@ -57,14 +59,14 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 	}
 
 	// Default column Customize
-	public function column_name($item){
+	public function column_license_key($item){
 		$actions = [];
-		$actions['edit']   = sprintf( '<a href="%s" title="%s">%s</a>', admin_url( 'admin.php?page=license-manager-wppt&action=edit&id=' . $item->id ), $item->id, __( 'Edit', 'license-manager-wppt' ), __( 'Edit', 'license-manager-wppt' ) );
+		$actions['edit']   = sprintf( '<a href="%s" title="%s">%s</a>', admin_url( 'admin.php?page=license-manager-wppt&action=edit&id=' . $item->id ), $item->license_key, __( 'Edit', 'license-manager-wppt' ), __( 'Edit', 'license-manager-wppt' ) );
 
-        $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" onclick="return confirm(\'Are you sure?\');" title="%s">%s</a>', wp_nonce_url( admin_url( 'admin-post.php?action=wd-ac-delete-address&id=' . $item->id ), 'wd-ac-delete-address' ), $item->id, __( 'Delete', 'license-manager-wppt' ), __( 'Delete', 'license-manager-wppt' ) );
+        $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" onclick="return confirm(\'Are you sure?\');" title="%s">%s</a>', wp_nonce_url( admin_url( 'admin-post.php?action=wd-ac-delete-address&id=' . $item->id ), 'wd-ac-delete-address' ), $item->license_key, __( 'Delete', 'license-manager-wppt' ), __( 'Delete', 'license-manager-wppt' ) );
 
 		return sprintf(
-			'<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url('admin.php?page=license-manager-wppt&action=view&id' .$item->id), $item->name, $this->row_actions($actions)
+			'<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url('admin.php?page=license-manager-wppt&action=view&id' .$item->id), $item->license_key, $this->row_actions($actions)
 		);
 	}
 
@@ -78,7 +80,7 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 		return date('j F Y',strtotime($item->dated));
 	}
 
-	public function prepare_items( $product_type = null ){
+	public function prepare_items( ){
 
 		$column = $this->get_columns();
 		$hidden = [];
@@ -87,15 +89,13 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 		$this->_column_headers = [$column, $hidden, $sortable];
 
 		//  pagination and sortable
-		 $per_page     = 10;
+		 $per_page     = 2;
          $current_page = $this->get_pagenum();
          $offset = ( $current_page - 1 ) * $per_page;
 
         $args = [
             'number' => $per_page,
             'offset' => $offset,
-            'product_type' => $product_type 
-
         ];
 
         if ( isset( $_REQUEST['orderby'] ) && isset( $_REQUEST['order'] ) ) {
@@ -103,22 +103,22 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
             $args['order'] = $_REQUEST['order'];
         }
 
-        $this->items = $this->get_product_list($args);
+        $this->items = $this->get_license_list($args);
 
         // pagination and sortable
 		$this->set_pagination_args([
-			'total_items' =>$this->product_count(),
-            'per_page'    =>$per_page,
+			'total_items' => $this->license_count(),
+            'per_page'    => $per_page,
 		]);
 	}
 
 	// Function 
 	/**
-	 * Get the Product
+	 * Get the License
 	 *
 	 * @return Array
 	 */
-	function get_product_list( $args = [] ) {
+	function get_license_list( $args = [] ) {
 	    global $wpdb;
 
 	    $defaults = [
@@ -126,16 +126,15 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 	        'offset' => 0,
 	        'orderby' => 'id',
 	        'order' => 'ASC',
-	        'product_type' => 'plugin'
 	    ];
 
 	    $args = wp_parse_args( $args, $defaults );
 
 	    $product_list = $wpdb->prepare(
-	            "SELECT * FROM {$wpdb->prefix}lmfwppt_products
-	            WHERE product_type = %s ORDER BY {$args['orderby']} {$args['order']}
+	            "SELECT * FROM {$wpdb->prefix}lmfwppt_licenses
+	            ORDER BY {$args['orderby']} {$args['order']}
 	            LIMIT %d, %d",
-	            $args['product_type'], $args['offset'], $args['number'] 
+	            $args['offset'], $args['number'] 
 	    );
 
 	    $items = $wpdb->get_results( $product_list );
@@ -144,12 +143,12 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 	}
 
 	/**
-	 * Get the Product Item Count
+	 * Get the License Count
 	 *
 	 * @return Int
 	 */
-	function product_count(){
+	function license_count(){
 	  global $wpdb;
-	  return (int) $wpdb->get_var("SELECT count(id) FROM {$wpdb->prefix}lmfwppt_products");
+	  return (int) $wpdb->get_var("SELECT count(id) FROM {$wpdb->prefix}lmfwppt_licenses");
 	}
 }

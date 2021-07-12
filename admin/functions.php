@@ -60,49 +60,6 @@ function lmfwppt_license_count() {
     return $count;
 }
 
-
-/**
- * Get the Product
- *
- * @return Array
- */
-
-function wp_product( $args = [] ) {
-    global $wpdb;
-
-    $defaults = [
-        'number'  => 20,
-        'offset'  => 0,
-        'orderby' => 'id',
-        'order'   => 'ASC'
-    ];
-
-    $args = wp_parse_args( $args, $defaults );
-
-    $product_list = $wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}lmfwppt_products
-            ORDER BY {$args['orderby']} {$args['order']}
-            LIMIT %d, %d",
-            $args['offset'], $args['number']
-    );
-
-    $items = $wpdb->get_results( $product_list );
-
-    return $items;
-}
-
-
-/**
- * Get the Product Item Count
- *
- * @return Int
- */
-function product_count(){
-  global $wpdb;
-  return (int) $wpdb->get_var("SELECT count(id) FROM {$wpdb->prefix}lmfwppt_products");
-}
-
-
 // API URL
 function lmfwppt_api_url(){
     return apply_filters( 'lmfwppt_api_url', home_url('/') );
