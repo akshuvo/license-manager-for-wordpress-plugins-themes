@@ -1,6 +1,4 @@
 <?php 
-
-
 if( !class_exists('WP_List_Table') ){
 	require_once ABSPATH .'wp-admin/includes/class-wp-list-table.php';
 }
@@ -80,7 +78,7 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 		return date('j F Y',strtotime($item->dated));
 	}
 
-	public function prepare_items(){
+	public function prepare_items( $product_type = null ){
 
 		$column = $this->get_columns();
 		$hidden = [];
@@ -89,30 +87,20 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 		$this->_column_headers = [$column, $hidden, $sortable];
 
 		//  pagination and sortable
-		$per_page     = 10;
-        $current_page = $this->get_pagenum();
-        $offset = ( $current_page - 1 ) * $per_page;
-
-        $page_url = '';
-        $products = $this->get_product_list();
-        foreach ($products as $results){
-        	if($results->product_type == "plugin"){
-        		$page_url = "license-manager-wppt";
-        	}
-        	else{
-        		$page_url = "license-manager-wppt-themes";
-        	}
-        }
+		 $per_page     = 10;
+         $current_page = $this->get_pagenum();
+         $offset = ( $current_page - 1 ) * $per_page;
 
         $args = [
             'number' => $per_page,
             'offset' => $offset,
-            'page_url' => $page_url
+            'product_type' => $product_type 
+
         ];
 
         if ( isset( $_REQUEST['orderby'] ) && isset( $_REQUEST['order'] ) ) {
             $args['orderby'] = $_REQUEST['orderby'];
-            $args['order'] = $_REQUEST['order'] ;
+            $args['order'] = $_REQUEST['order'];
         }
 
         $this->items = $this->get_product_list($args);
@@ -137,16 +125,17 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 	        'number' => 20,
 	        'offset' => 0,
 	        'orderby' => 'id',
-	        'order' => 'ASC'
+	        'order' => 'ASC',
+	        'product_type' => 'plugin'
 	    ];
 
 	    $args = wp_parse_args( $args, $defaults );
 
 	    $product_list = $wpdb->prepare(
 	            "SELECT * FROM {$wpdb->prefix}lmfwppt_products
-	            ORDER BY {$args['orderby']} {$args['order']} 
+	            WHERE product_type = %s ORDER BY {$args['orderby']} {$args['order']}
 	            LIMIT %d, %d",
-	            $args['offset'], $args['number']
+	            $args['product_type'], $args['offset'], $args['number'] 
 	    );
 
 	    $items = $wpdb->get_results( $product_list );
