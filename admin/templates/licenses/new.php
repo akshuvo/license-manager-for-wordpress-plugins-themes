@@ -1,15 +1,9 @@
 <?php
 $product_defaults_args = array (
-    'name' => '',
-    'slug' => '',
-    'product_type' => '',
-    'version' => '',
-    'tested' => '',
-    'requires' => '',
-    'requires_php' => '',
-    'download_link' => '',
-    'created_by' => '',
-    'dated' => '',
+    'license_key' => '',
+    'order_id' => '',
+    'package' => '',
+    'end_date' => '',
 );
 
 
@@ -43,55 +37,72 @@ extract( $get_product );
                     <h2><?php esc_html_e( 'Product Information', 'lmfwppt' ); ?></h2>
 
                     <div class="lmfwppt-form-field">
-                        <label for="name"><?php esc_html_e( 'Product Name', 'lmfwppt' ); ?></label>
-                        <input type="text" name="lmfwppt[name]" id="name" class="regular-text product_name_input" placeholder="Your Theme or Plugin Name" value="<?php echo esc_attr( $name ); ?>" required>
+                        <label for="download_link"><?php esc_html_e( 'License Key', 'lmfwppt' ); ?></label>
+                        <div class="lmfwppt-file-field">
+                            <input type="text" name="lmfwppt[license_key]" id="download_link" class="regular-text" placeholder="<?php esc_attr_e( 'License Key', 'lmfwppt' ); ?>" value="<?php echo esc_attr( $license_key ); ?>" readonly>
+                            <button class="button" type="button" id="generate_key"><?php esc_html_e( 'Generate Key', 'lmfwppt' ); ?></button>
+                        </div>
                     </div>
 
                     <div class="lmfwppt-form-field">
-                        <label for="slug"><?php esc_html_e( 'Product Slug', 'lmfwppt' ); ?></label>
-                        <input type="text" name="lmfwppt[slug]" id="slug" class="regular-text product_slug_input" placeholder="your-theme-or-plugin-name" value="<?php echo esc_attr( $slug ); ?>" required>
+                        <label for="order_id"><?php esc_html_e( 'Order ID', 'lmfwppt' ); ?></label>
+                        <select name="lmfwppt[order_id]" id="order_id">
+                            <option value="1" <?php selected( $order_id, '1' ); ?> ><?php esc_html_e( '1', 'lmfwppt' ); ?></option>
+                            <option value="2" <?php selected( $order_id, '2' ); ?> ><?php esc_html_e( '2', 'lmfwppt' ); ?></option>
+                             <option value="3" <?php selected( $order_id, '3' ); ?> ><?php esc_html_e( '3', 'lmfwppt' ); ?></option>
+                        </select>
                     </div>
-
                     <div class="lmfwppt-form-field">
-                        <label for="product_type"><?php esc_html_e( 'Product Slug', 'lmfwppt' ); ?></label>
+                        <label for="product_type"><?php esc_html_e( 'Product Type', 'lmfwppt' ); ?></label>
                         <select name="lmfwppt[product_type]" id="product_type">
-                            <option value="plugin" <?php selected( $product_type, 'plugin' ); ?> ><?php esc_html_e( 'Plugin', 'lmfwppt' ); ?></option>
-                            <option value="theme" <?php selected( $product_type, 'theme' ); ?> ><?php esc_html_e( 'Theme', 'lmfwppt' ); ?></option>
+
+                            <option value=" " selected>Select Product Type</option>
+
+                            <option value="Theme" <?php selected( $product_type, 'Theme' ); ?> ><?php esc_html_e( 'Theme', 'lmfwppt' ); ?></option>
+
+                            <option value="Plugin" <?php selected( $product_type, 'Plugin' ); ?> ><?php esc_html_e( 'Plugin', 'lmfwppt' ); ?></option>
+                        </select>
+                    </div>
+                    <!-- Theme Product List -->
+                    <div class="lmfwppt-form-field" id="lmfwppt_theme_products">
+                        <label for="product_theme_list"><?php esc_html_e( 'Theme Product List', 'lmfwppt' ); ?></label>
+                        <select name="lmfwppt[product_theme_list]" id="product_theme_list">
+                            <option value=" " selected>Select Product</option>
+                            <option value="1" <?php selected( $product_list, 'Load More Anythings Theme' ); ?> ><?php esc_html_e( 'Load More Anythings Theme', 'lmfwppt' ); ?></option>
+                        </select>
+                    </div>
+                    <!-- Theme License Package -->
+                    <div class="lmfwppt-form-field" id="lmfwppt_theme_license_package">
+                        <label for="lmfwppt_theme_package"><?php esc_html_e( 'Package Select', 'lmfwppt' ); ?></label>
+                        <select name="lmfwppt[package]" id="lmfwppt_theme_package">
+                            <option value="1 " <?php selected( $package, 'theme_license' ); ?> ><?php esc_html_e( 'Theme License 1', 'lmfwppt' ); ?></option>
+                        </select>
+                    </div>
+
+                    <!-- Plugin Product List -->
+                    <div class="lmfwppt-form-field" id="lmfwppt_plugin_products">
+                        <label for="product_plugin_list"><?php esc_html_e( 'Plugin Product List', 'lmfwppt' ); ?></label>
+                        <select name="lmfwppt[product_plugin_list]" id="product_plugin_list">
+                            <option value=" " selected>Select Product</option>
+                            <option value="1" <?php selected( $product_list, 'Load More Anythings Plugin' ); ?> ><?php esc_html_e( 'Load More Anythings Plugin', 'lmfwppt' ); ?></option>   
+                        </select>
+                    </div>
+
+                    <!-- Plugin License Package -->
+                    <div class="lmfwppt-form-field" id="lmfwppt_plugin_license_package">
+                        <label for="lmfwppt_plugin_package"><?php esc_html_e( 'Package Select', 'lmfwppt' ); ?></label>
+                        <select name="lmfwppt[package]" id="lmfwppt_plugin_package">
+                            <option value="1 " <?php selected( $package, 'plugin_license' ); ?> ><?php esc_html_e( 'Plugin License 1', 'lmfwppt' ); ?></option>
                         </select>
                     </div>
 
                     <div class="lmfwppt-form-field">
-                        <label for="product_version"><?php esc_html_e( 'Product Version', 'lmfwppt' ); ?></label>
-                        <input type="text" name="lmfwppt[version]" id="product_version" class="regular-text" placeholder="1.0" value="<?php echo esc_attr( $version ); ?>">
+                        <label for="end_date"><?php esc_html_e( 'License End Date', 'lmfwppt' ); ?></label>
+                        <input type="number" name="lmfwppt[end_date]" id="end_date" class="regular-text product_name_input" placeholder="License End Date" value="<?php echo esc_attr( $end_date ); ?>" required>
                     </div>
-
-                    <div class="lmfwppt-form-field">
-                        <label for="product_tested"><?php esc_html_e( 'Tested up to', 'lmfwppt' ); ?></label>
-                        <input type="text" name="lmfwppt[tested]" id="product_tested" class="regular-text" placeholder="<?php esc_attr_e( '5.7', 'lmfwppt' ); ?>" value="<?php echo esc_attr( $tested ); ?>">
-                    </div>
-
-                    <div class="lmfwppt-form-field">
-                        <label for="requires"><?php esc_html_e( 'Requires WordPress Version', 'lmfwppt' ); ?></label>
-                        <input type="text" name="lmfwppt[requires]" id="requires" class="regular-text" placeholder="<?php esc_attr_e( '4.7', 'lmfwppt' ); ?>" value="<?php echo esc_attr( $requires ); ?>">
-                    </div>
-
-                    <div class="lmfwppt-form-field">
-                        <label for="requires_php"><?php esc_html_e( 'Requires PHP Version', 'lmfwppt' ); ?></label>
-                        <input type="text" name="lmfwppt[requires_php]" id="requires_php" class="regular-text" placeholder="<?php esc_attr_e( '7.4', 'lmfwppt' ); ?>" value="<?php echo esc_attr( $requires_php ); ?>">
-                    </div>
-
-                    <div class="lmfwppt-form-field">
-                        <label for="download_link"><?php esc_html_e( 'File URL', 'lmfwppt' ); ?></label>
-                        <div class="lmfwppt-file-field">
-                            <input type="text" name="lmfwppt[download_link]" id="download_link" class="regular-text" placeholder="<?php esc_attr_e( 'URL of the Theme/Plugin file', 'lmfwppt' ); ?>" value="<?php echo esc_attr( $download_link ); ?>">
-                            <button class="button" type="button" id="download_link_button"><?php esc_html_e( 'Select File', 'lmfwppt' ); ?></button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
           
-
             <div class="lmfwppt-buttons">
                 <input type="hidden" name="lmaction" value="product_add_form">
                 <input type="hidden" name="lmfwppt[created_by]" value="<?php _e( get_current_user_id() ); ?>">
@@ -106,4 +117,36 @@ extract( $get_product );
         </form>
 
     </div>
+<script type="text/javascript">
+    (function($) {
+        "use strict";
+
+        function product_type() {
+            var singleValues = $( "#product_type" ).val();
+            var theme_license_id = $( "#product_theme_list" ).val();
+            var plugin_license_id = $( "#product_plugin_list" ).val();
+            $("div#lmfwppt_theme_products").hide();
+            $("div#lmfwppt_plugin_products").hide();
+            $("div#lmfwppt_theme_license_package").hide();
+            $("div#lmfwppt_plugin_license_package").hide();
+            if(singleValues == "Theme"){
+                $("div#lmfwppt_theme_products").show();
+                if(theme_license_id ==1){
+                    $("div#lmfwppt_theme_license_package").show();
+                }
+            }
+            else if(singleValues == "Plugin"){
+                $("div#lmfwppt_plugin_products").show();
+                if(plugin_license_id == 1){
+                    $("div#lmfwppt_plugin_license_package").show();
+                }
+            }
+        }
+        $( "select" ).change( product_type );
+        product_type();
+
+    })(jQuery);
+</script>
 </div>
+
+ 
