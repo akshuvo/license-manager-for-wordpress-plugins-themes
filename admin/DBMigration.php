@@ -1,7 +1,7 @@
 <?php
 class LMFWPPT_DBMigration {
 	
-	var $db_version = 8; // initial db version, don't use floats
+	var $db_version = 9; // initial db version, don't use floats
     var $db_version_key = "lmfwppt_db_version";
 
 	function __construct(){
@@ -42,6 +42,7 @@ class LMFWPPT_DBMigration {
 	          `license_key` varchar(255) NOT NULL DEFAULT '',
 	          `package_id` varchar(100) NOT NULL,
 	          `order_id` int,
+	          `end_date` int,
 	          `dated` datetime NOT NULL DEFAULT NOW(),
 	          PRIMARY KEY (`id`)
 	        ) $charset_collate";
