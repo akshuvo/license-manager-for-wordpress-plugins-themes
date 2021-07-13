@@ -10,7 +10,7 @@ class LMFWPPT_LicenseHandler {
      */
     function __construct() {
         
-        //add_action( 'init', [ $this, 'get_license_details' ] );
+        add_action( 'wp_ajax_license_add_form', [ $this, 'license_add' ] );
 
         if ( isset( $_GET['license_key'] ) ) {
             $this->get_wp_license_details( sanitize_text_field( $_GET['license_key'] ) );
@@ -70,6 +70,41 @@ class LMFWPPT_LicenseHandler {
         ppr($response);
 
         die();
+    }
+
+    // Product add form action
+    function license_add(){
+   
+        if ( isset( $_POST['lmaction'] ) && $_POST['lmaction'] == "license_add_form" ) {
+
+            $this->create_license( $_POST['lmfwppt'] );
+
+        }
+
+        die();
+    }
+
+    // Create License function
+    function create_license( $post_data = array() ){
+        global $wpdb;
+        $table = $wpdb->prefix.'lmfwppt_licenses';
+        $data = array(
+            'license_key' => isset($post_data['license_key']) ? sanitize_text_field( $post_data['license_key'] ) : "",
+            'package_id' => isset($post_data['package_id']) ? sanitize_text_field( $post_data['package_id'] ) : "",
+            'order_id' => isset($post_data['order_id']) ? sanitize_text_field( $post_data['order_id'] ) : "",
+            'end_date' => isset($post_data['end_date']) ? intval( $post_data['end_date'] ) : "",
+        );
+
+        if ( isset( $post_data['license_id'] ) ) {
+            $insert_id = intval( $post_data['license_id'] );
+            $wpdb->update( $table, $data, array( 'id'=> $insert_id ) );
+        } else {
+            $wpdb->insert( $table, $data);
+            $insert_id = $wpdb->insert_id;
+        }
+        
+        return $insert_id ? $insert_id : null;
+
     }
 
 }

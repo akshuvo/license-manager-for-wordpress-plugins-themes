@@ -1,8 +1,10 @@
 <?php
 $product_defaults_args = array (
     'license_key' => '',
+    'product_type' => '',
+    'product_list' => '',
     'order_id' => '',
-    'package' => '',
+    'package_id' => '',
     'end_date' => '',
 );
 
@@ -31,7 +33,7 @@ extract( $get_product );
     <h1><?php _e( 'New License', 'lmfwppt' ); ?></h1>
 
     <div class="lmwppt-wrap">
-        <form action="" method="post" id="product-form">
+        <form action="" method="post" id="license-add-form">
             <div class="lmwppt-inner-card">
                 <div class="lmfwppt-form-section" id="product-information">
                     <h2><?php esc_html_e( 'Product Information', 'lmfwppt' ); ?></h2>
@@ -39,7 +41,7 @@ extract( $get_product );
                     <div class="lmfwppt-form-field">
                         <label for="download_link"><?php esc_html_e( 'License Key', 'lmfwppt' ); ?></label>
                         <div class="lmfwppt-file-field">
-                            <input type="text" name="lmfwppt[license_key]" id="download_link" class="regular-text" placeholder="<?php esc_attr_e( 'License Key', 'lmfwppt' ); ?>" value="<?php echo esc_attr( $license_key ); ?>" readonly>
+                            <input type="text" name="lmfwppt[license_key]" id="license_key" class="regular-text" placeholder="<?php esc_attr_e( 'License Key', 'lmfwppt' ); ?>" value="<?php echo esc_attr( $license_key ); ?>">
                             <button class="button" type="button" id="generate_key"><?php esc_html_e( 'Generate Key', 'lmfwppt' ); ?></button>
                         </div>
                     </div>
@@ -74,8 +76,8 @@ extract( $get_product );
                     <!-- Theme License Package -->
                     <div class="lmfwppt-form-field" id="lmfwppt_theme_license_package">
                         <label for="lmfwppt_theme_package"><?php esc_html_e( 'Package Select', 'lmfwppt' ); ?></label>
-                        <select name="lmfwppt[package]" id="lmfwppt_theme_package">
-                            <option value="1 " <?php selected( $package, 'theme_license' ); ?> ><?php esc_html_e( 'Theme License 1', 'lmfwppt' ); ?></option>
+                        <select name="lmfwppt[package_id]" id="lmfwppt_theme_package">
+                            <option value="1 " <?php selected( $package_id, 'theme_license' ); ?> ><?php esc_html_e( 'Theme License 1', 'lmfwppt' ); ?></option>
                         </select>
                     </div>
 
@@ -91,8 +93,8 @@ extract( $get_product );
                     <!-- Plugin License Package -->
                     <div class="lmfwppt-form-field" id="lmfwppt_plugin_license_package">
                         <label for="lmfwppt_plugin_package"><?php esc_html_e( 'Package Select', 'lmfwppt' ); ?></label>
-                        <select name="lmfwppt[package]" id="lmfwppt_plugin_package">
-                            <option value="1 " <?php selected( $package, 'plugin_license' ); ?> ><?php esc_html_e( 'Plugin License 1', 'lmfwppt' ); ?></option>
+                        <select name="lmfwppt[package_id]" id="lmfwppt_plugin_package">
+                            <option value="1 " <?php selected( $package_id, 'plugin_license' ); ?> ><?php esc_html_e( 'Plugin License 1', 'lmfwppt' ); ?></option>
                         </select>
                     </div>
 
@@ -104,7 +106,7 @@ extract( $get_product );
             </div>
           
             <div class="lmfwppt-buttons">
-                <input type="hidden" name="lmaction" value="product_add_form">
+                <input type="hidden" name="lmaction" value="license_add_form">
                 <input type="hidden" name="lmfwppt[created_by]" value="<?php _e( get_current_user_id() ); ?>">
                 
                 <?php if( isset( $license_id ) ) : ?>
