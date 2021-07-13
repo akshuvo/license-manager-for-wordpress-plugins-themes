@@ -1,8 +1,10 @@
 <?php
 $product_defaults_args = array (
     'license_key' => '',
+    'product_type' => '',
+    'product_list' => '',
     'order_id' => '',
-    'package' => '',
+    'package_id' => '',
     'end_date' => '',
 );
 
@@ -74,8 +76,8 @@ extract( $get_product );
                     <!-- Theme License Package -->
                     <div class="lmfwppt-form-field" id="lmfwppt_theme_license_package">
                         <label for="lmfwppt_theme_package"><?php esc_html_e( 'Package Select', 'lmfwppt' ); ?></label>
-                        <select name="lmfwppt[package]" id="lmfwppt_theme_package">
-                            <option value="1 " <?php selected( $package, 'theme_license' ); ?> ><?php esc_html_e( 'Theme License 1', 'lmfwppt' ); ?></option>
+                        <select name="lmfwppt[package_id]" id="lmfwppt_theme_package">
+                            <option value="1 " <?php selected( $package_id, 'theme_license' ); ?> ><?php esc_html_e( 'Theme License 1', 'lmfwppt' ); ?></option>
                         </select>
                     </div>
 
@@ -91,8 +93,8 @@ extract( $get_product );
                     <!-- Plugin License Package -->
                     <div class="lmfwppt-form-field" id="lmfwppt_plugin_license_package">
                         <label for="lmfwppt_plugin_package"><?php esc_html_e( 'Package Select', 'lmfwppt' ); ?></label>
-                        <select name="lmfwppt[package]" id="lmfwppt_plugin_package">
-                            <option value="1 " <?php selected( $package, 'plugin_license' ); ?> ><?php esc_html_e( 'Plugin License 1', 'lmfwppt' ); ?></option>
+                        <select name="lmfwppt[package_id]" id="lmfwppt_plugin_package">
+                            <option value="1 " <?php selected( $package_id, 'plugin_license' ); ?> ><?php esc_html_e( 'Plugin License 1', 'lmfwppt' ); ?></option>
                         </select>
                     </div>
 

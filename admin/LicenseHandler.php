@@ -72,6 +72,29 @@ class LMFWPPT_LicenseHandler {
         die();
     }
 
+    // Create License function
+    function create_product( $post_data = array() ){
+        global $wpdb;
+        $table = $wpdb->prefix.'lmfwppt_licenses';
+        $data = array(
+            'license_key' => isset($post_data['license_key']) ? sanitize_text_field( $post_data['license_key'] ) : "",
+            'package_id' => isset($post_data['package_id']) ? sanitize_text_field( $post_data['package_id'] ) : "",
+            'order_id' => isset($post_data['order_id']) ? sanitize_text_field( $post_data['order_id'] ) : "",
+            'end_date' => isset($post_data['end_date']) ? intval( $post_data['end_date'] ) : "",
+        );
+
+        if ( isset( $post_data['license_id'] ) ) {
+            $insert_id = intval( $post_data['license_id'] );
+            $wpdb->update( $table, $data, array( 'id'=> $insert_id ) );
+        } else {
+            $wpdb->insert( $table, $data);
+            $insert_id = $wpdb->insert_id;
+        }
+        
+        return $insert_id ? $insert_id : null;
+
+    }
+
 }
 
 new LMFWPPT_LicenseHandler();
