@@ -10,7 +10,7 @@ class LMFWPPT_LicenseHandler {
      */
     function __construct() {
         
-        //add_action( 'init', [ $this, 'get_license_details' ] );
+        add_action( 'wp_ajax_license_add_form', [ $this, 'license_add' ] );
 
         if ( isset( $_GET['license_key'] ) ) {
             $this->get_wp_license_details( sanitize_text_field( $_GET['license_key'] ) );
@@ -72,8 +72,20 @@ class LMFWPPT_LicenseHandler {
         die();
     }
 
+    // Product add form action
+    function license_add(){
+   
+        if ( isset( $_POST['lmaction'] ) && $_POST['lmaction'] == "license_add_form" ) {
+
+            $this->create_license( $_POST['lmfwppt'] );
+
+        }
+
+        die();
+    }
+
     // Create License function
-    function create_product( $post_data = array() ){
+    function create_license( $post_data = array() ){
         global $wpdb;
         $table = $wpdb->prefix.'lmfwppt_licenses';
         $data = array(
