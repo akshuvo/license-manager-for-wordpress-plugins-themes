@@ -31,7 +31,7 @@ extract( $get_product );
     <h1><?php _e( 'New License', 'lmfwppt' ); ?></h1>
 
     <div class="lmwppt-wrap">
-        <form action="" method="post" id="product-form">
+        <form action="" method="post" id="license-add-form">
             <div class="lmwppt-inner-card">
                 <div class="lmfwppt-form-section" id="product-information">
                     <h2><?php esc_html_e( 'Product Information', 'lmfwppt' ); ?></h2>
@@ -104,7 +104,7 @@ extract( $get_product );
             </div>
           
             <div class="lmfwppt-buttons">
-                <input type="hidden" name="lmaction" value="product_add_form">
+                <input type="hidden" name="lmaction" value="license_add_form">
                 <input type="hidden" name="lmfwppt[created_by]" value="<?php _e( get_current_user_id() ); ?>">
                 
                 <?php if( isset( $license_id ) ) : ?>
