@@ -159,6 +159,30 @@
 
         });
 
+        $(document).on('change', '.products_list', function(e){
+            var id = $(this).val();
+            console.log(id);
+            $.ajax({
+                type:"POST",
+                url: ajaxurl,
+                dataType:'json',
+                data:{
+                    action:'package_id',
+                    id:id
+                },
+                cache:false,
+                success:function(response){
+                    if(response.success !=""){
+                        $("#lmfwppt_license_package").show();
+                         $("#lmfwppt_theme_package").append("<option value='" + response.success[0]['id'] + "'>" + response.success[0]['label'] + "</option>")
+                    }
+                    
+                }
+            });
+        });
+      
+      
+
 
 	});
 })(jQuery);

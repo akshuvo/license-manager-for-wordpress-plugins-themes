@@ -1,4 +1,5 @@
 <?php
+ 
 $product_defaults_args = array (
     'license_key' => '',
     'product_type' => '',
@@ -28,6 +29,7 @@ $get_product = wp_parse_args( $get_product, $product_defaults_args );
 // Let's extract the array to variable
 extract( $get_product );
 
+
 ?>
 <div class="wrap">
     <h1><?php _e( 'New License', 'lmfwppt' ); ?></h1>
@@ -41,7 +43,7 @@ extract( $get_product );
                     <div class="lmfwppt-form-field">
                         <label for="download_link"><?php esc_html_e( 'License Key', 'lmfwppt' ); ?></label>
                         <div class="lmfwppt-file-field">
-                            <input type="text" name="lmfwppt[license_key]" id="license_key" class="regular-text" placeholder="<?php esc_attr_e( 'License Key', 'lmfwppt' ); ?>" value="<?php echo esc_attr( $license_key ); ?>">
+                            <input type="text" name="lmfwppt[license_key]" id="license_key" class="regular-text" placeholder="<?php esc_attr_e( 'License Key', 'lmfwppt' ); ?>" value="<?php echo esc_attr( $license_key ); ?>" readonly>
                             <button class="button" type="button" id="generate_key"><?php esc_html_e( 'Generate Key', 'lmfwppt' ); ?></button>
                         </div>
                     </div>
@@ -65,39 +67,70 @@ extract( $get_product );
                             <option value="Plugin" <?php selected( $product_type, 'Plugin' ); ?> ><?php esc_html_e( 'Plugin', 'lmfwppt' ); ?></option>
                         </select>
                     </div>
+                    
                     <!-- Theme Product List -->
                     <div class="lmfwppt-form-field" id="lmfwppt_theme_products">
                         <label for="product_theme_list"><?php esc_html_e( 'Theme Product List', 'lmfwppt' ); ?></label>
-                        <select name="lmfwppt[product_theme_list]" id="product_theme_list">
+                        <select name="lmfwppt[product_theme_list]" class="products_list" id="product_theme_list">
                             <option value=" " selected>Select Product</option>
-                            <option value="1" <?php selected( $product_list, 'Load More Anythings Theme' ); ?> ><?php esc_html_e( 'Load More Anythings Theme', 'lmfwppt' ); ?></option>
+                            <?php
+                                global $wpdb;
+
+                                $args = '';
+                                $defaults = [
+                                    'number' => 20,
+                                    'product_type' => "theme"
+                                ];
+
+                                $args = wp_parse_args( $args, $defaults );
+                                 $product_list = $wpdb->prepare("SELECT id,name FROM {$wpdb->prefix}lmfwppt_products WHERE product_type = %s 
+                                    LIMIT %d",
+                                    $args['product_type'],$args['number']);
+
+                                 $items = $wpdb->get_results( $product_list);
+                                 foreach ($items as $products_list):?>
+                                    
+                            <option value="<?php echo $products_list->id; ?>" <?php selected( $product_list, 'Load More Anythings Theme' ); ?> ><?php echo $products_list->name; ?></option>
+                        <?php endforeach; ?>
+
                         </select>
                     </div>
                     <!-- Theme License Package -->
-                    <div class="lmfwppt-form-field" id="lmfwppt_theme_license_package">
-                        <label for="lmfwppt_theme_package"><?php esc_html_e( 'Package Select', 'lmfwppt' ); ?></label>
+                    
+                    <div class="lmfwppt-form-field" id="lmfwppt_license_package">
+                        <label for="lmfwppt_theme_package">Package Select</label>
                         <select name="lmfwppt[package_id]" id="lmfwppt_theme_package">
-                            <option value="1 " <?php selected( $package_id, 'theme_license' ); ?> ><?php esc_html_e( 'Theme License 1', 'lmfwppt' ); ?></option>
+                             
                         </select>
                     </div>
 
                     <!-- Plugin Product List -->
                     <div class="lmfwppt-form-field" id="lmfwppt_plugin_products">
                         <label for="product_plugin_list"><?php esc_html_e( 'Plugin Product List', 'lmfwppt' ); ?></label>
-                        <select name="lmfwppt[product_plugin_list]" id="product_plugin_list">
+                        <select name="lmfwppt[product_plugin_list]" class="products_list" id="product_plugin_list">
                             <option value=" " selected>Select Product</option>
-                            <option value="1" <?php selected( $product_list, 'Load More Anythings Plugin' ); ?> ><?php esc_html_e( 'Load More Anythings Plugin', 'lmfwppt' ); ?></option>   
+                               <?php
+                                global $wpdb;
+
+                                $args = '';
+                                $defaults = [
+                                    'number' => 20,
+                                    'product_type' => "Plugin"
+                                ];
+
+                                $args = wp_parse_args( $args, $defaults );
+                                 $product_list = $wpdb->prepare("SELECT id,name FROM {$wpdb->prefix}lmfwppt_products WHERE product_type = %s 
+                                    LIMIT %d",
+                                    $args['product_type'],$args['number']);
+
+                                 $items = $wpdb->get_results( $product_list);
+                                 foreach ($items as $products_list):?>
+                                    
+                            <option value="<?php echo $products_list->id; ?>" <?php selected( $product_list, 'Load More Anythings Theme' ); ?> ><?php echo $products_list->name; ?></option>
+                        <?php endforeach; ?>
                         </select>
                     </div>
-
-                    <!-- Plugin License Package -->
-                    <div class="lmfwppt-form-field" id="lmfwppt_plugin_license_package">
-                        <label for="lmfwppt_plugin_package"><?php esc_html_e( 'Package Select', 'lmfwppt' ); ?></label>
-                        <select name="lmfwppt[package_id]" id="lmfwppt_plugin_package">
-                            <option value="1 " <?php selected( $package_id, 'plugin_license' ); ?> ><?php esc_html_e( 'Plugin License 1', 'lmfwppt' ); ?></option>
-                        </select>
-                    </div>
-
+                     
                     <div class="lmfwppt-form-field">
                         <label for="end_date"><?php esc_html_e( 'License End Date', 'lmfwppt' ); ?></label>
                         <input type="number" name="lmfwppt[end_date]" id="end_date" class="regular-text product_name_input" placeholder="License End Date" value="<?php echo esc_attr( $end_date ); ?>" required>
@@ -129,19 +162,14 @@ extract( $get_product );
             var plugin_license_id = $( "#product_plugin_list" ).val();
             $("div#lmfwppt_theme_products").hide();
             $("div#lmfwppt_plugin_products").hide();
-            $("div#lmfwppt_theme_license_package").hide();
-            $("div#lmfwppt_plugin_license_package").hide();
+            $("#lmfwppt_license_package").hide();
             if(singleValues == "Theme"){
                 $("div#lmfwppt_theme_products").show();
-                if(theme_license_id ==1){
-                    $("div#lmfwppt_theme_license_package").show();
-                }
+                 
             }
             else if(singleValues == "Plugin"){
                 $("div#lmfwppt_plugin_products").show();
-                if(plugin_license_id == 1){
-                    $("div#lmfwppt_plugin_license_package").show();
-                }
+                 
             }
         }
         $( "select" ).change( product_type );

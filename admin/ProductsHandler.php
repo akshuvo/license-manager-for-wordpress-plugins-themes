@@ -216,7 +216,7 @@ class LMFWPPT_ProductsHandler {
     }
 
     // Get Product package details by product_id
-    public static function get_packages( $product_id = null ){
+    public static function get_packages( $product_id = null ){ 
 
         if( !$product_id ){
             return;
