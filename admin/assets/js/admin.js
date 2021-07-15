@@ -142,8 +142,20 @@
 
                 },
                 success: function(data) {
+                    
+                        $(".success-msg").css({
+                            'right': '100px',
+                            'visibility' : 'visible'
+                        });
+                     
+                    setTimeout(function(){
+                        $('.success-msg').css({
+                        'right' : '-100%',
+                        'visibility' : 'hidden'
+                     });
 
-
+                    },3000);
+                    
                     //var response = JSON.parse(data);
 
 
@@ -165,18 +177,19 @@
             $.ajax({
                 type:"POST",
                 url: ajaxurl,
-                dataType:'json',
+                //dataType:'json',
                 data:{
                     action:'package_id',
                     id:id
                 },
                 cache:false,
                 success:function(response){
-                    if(response.success !=""){
-                        $("#lmfwppt_license_package").show();
-                         $("#lmfwppt_theme_package").append("<option value='" + response.success[0]['id'] + "'>" + response.success[0]['label'] + "</option>")
-                    }
-                    
+                   
+                     if( response ){
+                        $("#lmfwppt_package_list").html( response )
+                         $("#lmfwppt_license_package").show();
+                     }
+                     
                 }
             });
         });

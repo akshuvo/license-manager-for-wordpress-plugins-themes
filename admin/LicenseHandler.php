@@ -110,14 +110,25 @@ class LMFWPPT_LicenseHandler {
 
     function product_package(){
         if(isset($_POST['id'])){
-        $success = LMFWPPT_ProductsHandler::get_packages($_POST['id']);
+        $package_list = LMFWPPT_ProductsHandler::get_packages($_POST['id']);
+        var_dump($package_list);
+        if($package_list){
+
+          foreach($package_list as $result):
+            $package_id = $result['package_id'];
+            $label = $result['label'];
+
+            ?>
+            <option value="<?php echo $package_id; ?>"><?php echo $label; ?></option> 
+
+            <?php 
+            
+         endforeach;
+
+        }
          
         }
-
-        $response = array(
-            'success' => $success
-        ); 
-        echo json_encode($response); 
+ 
         die();
     }
 
