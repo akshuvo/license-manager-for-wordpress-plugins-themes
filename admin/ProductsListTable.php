@@ -107,7 +107,7 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 
         // pagination and sortable
 		$this->set_pagination_args([
-			'total_items' =>$this->product_count(),
+			'total_items' =>$this->product_count($product_type),
             'per_page'    =>$per_page,
 		]);
 	}
@@ -148,8 +148,22 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 	 *
 	 * @return Int
 	 */
-	function product_count(){
-	  global $wpdb;
-	  return (int) $wpdb->get_var("SELECT count(id) FROM {$wpdb->prefix}lmfwppt_products");
+	function product_count($product_type){
+
+	  	global $wpdb;
+        $args = '';
+        $defaults = [
+            'number' => 20,
+            'product_type' => $product_type
+        ];
+
+        $args = wp_parse_args( $args, $defaults );
+         $product_list = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}lmfwppt_products WHERE product_type = %s 
+            LIMIT %d",
+            $args['product_type'],$args['number']);
+        $items = $wpdb->get_results( $product_list);
+
+        return count($items);
 	}
+
 }
