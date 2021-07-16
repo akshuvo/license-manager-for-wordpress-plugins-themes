@@ -171,13 +171,14 @@
 
         });
 
+        // Add package
         $(document).on('change', '.products_list', function(e){
+            $("#lmfwppt_license_package").show();
             var id = $(this).val();
             console.log(id);
             $.ajax({
                 type:"POST",
                 url: ajaxurl,
-                //dataType:'json',
                 data:{
                     action:'package_id',
                     id:id
@@ -187,15 +188,30 @@
                    
                      if( response ){
                         $("#lmfwppt_package_list").html( response )
-                         $("#lmfwppt_license_package").show();
                      }
                      
                 }
             });
         });
       
-      
+        // Generate License Key
+        $(document).on('click', '#generate_key', function(e){
+            e.preventDefault();
 
+            $.ajax({
+                type:'POST',
+                url:ajaxurl,
+                data:{
+                    action:'license_key',
+                },
+                cache:false,
+                success:function(response){
+                    if(response){
+                        $("#license_key").val(response);
+                    }
+                }
+            })
+        });
 
 	});
 })(jQuery);

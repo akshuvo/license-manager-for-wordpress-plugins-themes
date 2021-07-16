@@ -12,6 +12,7 @@ class LMFWPPT_LicenseHandler {
         
         add_action( 'wp_ajax_license_add_form', [ $this, 'license_add' ] );
         add_action( 'wp_ajax_package_id', [ $this, 'product_package' ] );
+        add_action( 'wp_ajax_license_key', [ $this, 'license_key_add' ] );
 
         if ( isset( $_GET['license_key'] ) ) {
             $this->get_wp_license_details( sanitize_text_field( $_GET['license_key'] ) );
@@ -108,6 +109,7 @@ class LMFWPPT_LicenseHandler {
 
     }
 
+    // Select Package 
     function product_package(){
         if(isset($_POST['id'])){
         $package_list = LMFWPPT_ProductsHandler::get_packages($_POST['id']);
@@ -120,7 +122,6 @@ class LMFWPPT_LicenseHandler {
 
             ?>
             <option value="<?php echo $package_id; ?>"><?php echo $label; ?></option> 
-
             <?php 
             
          endforeach;
@@ -132,6 +133,13 @@ class LMFWPPT_LicenseHandler {
         die();
     }
 
+    // License Key Genarate
+    function license_key_add(){
+
+        echo $key = rand();
+
+        die();
+    }
 
 }
 

@@ -86,11 +86,8 @@ extract( $get_product );
 
                     <div class="lmfwppt-form-field">
                         <label for="order_id"><?php esc_html_e( 'Order ID', 'lmfwppt' ); ?></label>
-                        <select name="lmfwppt[order_id]" id="order_id">
-                            <option value="1" <?php selected( $order_id, '1' ); ?> ><?php esc_html_e( '1', 'lmfwppt' ); ?></option>
-                            <option value="2" <?php selected( $order_id, '2' ); ?> ><?php esc_html_e( '2', 'lmfwppt' ); ?></option>
-                             <option value="3" <?php selected( $order_id, '3' ); ?> ><?php esc_html_e( '3', 'lmfwppt' ); ?></option>
-                        </select>
+                         
+                        <input type="text" name="lmfwppt[order_id]" id="order_id" class="regular-text" placeholder="Order ID" value="<?php echo esc_attr( $order_id ); ?>" required>
                     </div>
                     <div class="lmfwppt-form-field">
                         <label for="product_type"><?php esc_html_e( 'Product Type', 'lmfwppt' ); ?></label>
@@ -162,7 +159,7 @@ extract( $get_product );
                      
                      <!--  License Package -->
                     <div class="lmfwppt-form-field" id="lmfwppt_license_package">
-                        <label for="lmfwppt_theme_package">Package Select</label>
+                        <label for="lmfwppt_theme_package">Select Package</label>
                         <select name="lmfwppt[package_id]" id="lmfwppt_package_list">
                              
                         </select>
