@@ -33,33 +33,12 @@ extract( $get_product );
 ?>
 <div class="wrap">
 
-    <style type="text/css">
-        .lmwppt-inner-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .success-msg {
-            position: absolute;
-            top: 43px;
-            visibility: hidden;
-            transition: .4s;
-            right: -100%;
-        }
-
-        .success-msg h1 {
-            font-size: 18px;
-            padding: 10px;
-            background: #103a10fa;
-            color: #fff;
-            font-weight: 500;
-            text-align: center;
-        }
-        #lmfwppt_license_package{
+<style type="text/css">
+    #lmfwppt_license_package{
             display: none;
-        }
+}
 
-    </style>
+</style>
 
     <h1><?php _e( 'New License', 'lmfwppt' ); ?></h1>
 
@@ -69,10 +48,6 @@ extract( $get_product );
             <!-- Success alert show -->
             
             <div class="lmwppt-inner-card">
-                <div class="success-msg">
-                    <h1>License Register Successfully</h1>
-                </div>
-
                 <div class="lmfwppt-form-section" id="product-information">
                     <h2><?php esc_html_e( 'Product Information', 'lmfwppt' ); ?></h2>
 

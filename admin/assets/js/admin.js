@@ -136,29 +136,11 @@
                 contentType: false,
                 beforeSend: function(data) {
 
-
                 },
                 complete: function(data) {
 
                 },
                 success: function(data) {
-                    
-                        $(".success-msg").css({
-                            'right': '100px',
-                            'visibility' : 'visible'
-                        });
-                     
-                    setTimeout(function(){
-                        $('.success-msg').css({
-                        'right' : '-100%',
-                        'visibility' : 'hidden'
-                     });
-
-                    },3000);
-                    
-                    //var response = JSON.parse(data);
-
-
                     console.log(data);
 
                 },
@@ -175,7 +157,7 @@
         $(document).on('change', '.products_list', function(e){
             $("#lmfwppt_license_package").show();
             var id = $(this).val();
-            console.log(id);
+
             $.ajax({
                 type:"POST",
                 url: ajaxurl,
@@ -184,12 +166,13 @@
                     id:id
                 },
                 cache:false,
-                success:function(response){
-                   
-                     if( response ){
-                        $("#lmfwppt_package_list").html( response )
+                success:function(data){
+                     if( data ){
+                        $("#lmfwppt_package_list").html( data )
                      }
-                     
+                }
+                error:function(data){
+                    console.log(data);
                 }
             });
         });
@@ -205,9 +188,9 @@
                     action:'license_key',
                 },
                 cache:false,
-                success:function(response){
+                success:function(data){
                     if(response){
-                        $("#license_key").val(response);
+                        $("#license_key").val(data);
                     }
                 }
             })
