@@ -61,12 +61,12 @@ class LMFWPPT_LicenseListTable extends \WP_List_Table{
 	// Default column Customize
 	public function column_license_key($item){
 		$actions = [];
-		$actions['edit']   = sprintf( '<a href="%s" title="%s">%s</a>', admin_url( 'admin.php?page=license-manager-wppt&action=edit&id=' . $item->id ), $item->license_key, __( 'Edit', 'license-manager-wppt' ), __( 'Edit', 'license-manager-wppt' ) );
+		$actions['edit']   = sprintf( '<a href="%s" title="%s">%s</a>', admin_url( 'admin.php?page=license-manager-wppt-licenses&action=edit&id=' . $item->id ), $item->id, __( 'Edit', 'license-manager-wppt' ), __( 'Edit', 'license-manager-wppt' ) );
 
         $actions['delete'] = sprintf( '<a href="%s" class="submitdelete" onclick="return confirm(\'Are you sure?\');" title="%s">%s</a>', wp_nonce_url( admin_url( 'admin-post.php?action=wd-ac-delete-address&id=' . $item->id ), 'wd-ac-delete-address' ), $item->license_key, __( 'Delete', 'license-manager-wppt' ), __( 'Delete', 'license-manager-wppt' ) );
 
 		return sprintf(
-			'<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url('admin.php?page=license-manager-wppt&action=edit&id=' . $item->id ), $item->license_key, $this->row_actions($actions)
+			'<a href="%1$s"><strong>%2$s</strong></a> %3$s', admin_url('admin.php?page=license-manager-wppt-licenses&action=edit&id=' . $item->id ), $item->license_key, $this->row_actions($actions)
 		);
 
 	}

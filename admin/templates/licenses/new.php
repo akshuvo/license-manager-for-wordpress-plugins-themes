@@ -126,7 +126,7 @@ extract( $get_product );
                                  $items = $wpdb->get_results( $product_list);
                                  foreach ($items as $products_list):?>
                                     
-                            <option value="<?php echo $products_list->id; ?>" <?php selected( $product_list, 'Load More Anythings Theme' ); ?> ><?php echo $products_list->name; ?></option>
+                            <option value="<?php echo $products_list->id; ?>"><?php echo $products_list->name; ?></option>
                         <?php endforeach; ?>
 
                         </select>
