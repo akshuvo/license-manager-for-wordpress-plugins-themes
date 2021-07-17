@@ -17,7 +17,8 @@ if ( isset( $_GET['action'] ) && $_GET['action'] == "edit" && isset( $_GET['id']
     $license_id = intval( $_GET['id'] );
 
     // Get Product date 
-    $get_product = LMFWPPT_ProductsHandler::get_product( $license_id );
+    //$get_product = LMFWPPT_ProductsHandler::get_product( $license_id );
+    $get_product = LMFWPPT_LicenseHandler::get_license( $license_id );
 
     // Get packages data
     $get_packages = LMFWPPT_ProductsHandler::get_packages( $license_id );
@@ -40,7 +41,22 @@ extract( $get_product );
 
 </style>
 
-    <h1><?php _e( 'New License', 'lmfwppt' ); ?></h1>
+<?php
+
+$value = $_GET['id'];
+if(isset($value)){
+     ?>
+   <h1><?php _e( 'Update License', 'lmfwppt' ); ?></h1>
+     <?php 
+
+}else{
+     ?>
+     <h1><?php _e( 'New License', 'lmfwppt' ); ?></h1>
+     <?php 
+}
+
+?>
+    
 
     <div class="lmwppt-wrap">
              

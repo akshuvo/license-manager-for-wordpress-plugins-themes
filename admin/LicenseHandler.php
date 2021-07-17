@@ -20,6 +20,20 @@ class LMFWPPT_LicenseHandler {
         
     }
 
+    // Get Product details by id al
+    public static function get_license( $id = null ){
+
+        if( !$id ){
+            return;
+        }
+
+        global $wpdb;
+
+        $query = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}lmfwppt_licenses WHERE id = %d", $id);
+        return $wpdb->get_row( $query, ARRAY_A );
+    }
+
+
     // License Package Field add
     function get_license_details( $license_key = null ){
         $response = array();
@@ -113,9 +127,7 @@ class LMFWPPT_LicenseHandler {
     function product_package(){
         if(isset($_POST['id'])){
         $package_list = LMFWPPT_ProductsHandler::get_packages($_POST['id']);
-        var_dump($package_list);
         if($package_list){
-
           foreach($package_list as $result):
             $package_id = $result['package_id'];
             $label = $result['label'];

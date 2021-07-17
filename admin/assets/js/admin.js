@@ -170,7 +170,7 @@
                      if( data ){
                         $("#lmfwppt_package_list").html( data )
                      }
-                }
+                },
                 error:function(data){
                     console.log(data);
                 }
@@ -189,7 +189,7 @@
                 },
                 cache:false,
                 success:function(data){
-                    if(response){
+                    if(data){
                         $("#license_key").val(data);
                     }
                 }
