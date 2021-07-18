@@ -76,7 +76,7 @@ if(isset($value)){
                     <div class="lmfwppt-form-field">
                         <label for="order_id"><?php esc_html_e( 'Order ID', 'lmfwppt' ); ?></label>
                          
-                        <input type="number" name="lmfwppt[order_id]" id="order_id" class="regular-text" placeholder="Order ID" value="<?php echo esc_attr( $order_id ); ?>" required>
+                        <input type="number" name="lmfwppt[order_id]" id="order_id" class="regular-text" placeholder="Order ID" value="<?php echo esc_attr( $order_id ); ?>">
                     </div>
                     <div class="lmfwppt-form-field">
                         <label for="product_type"><?php esc_html_e( 'Product Type', 'lmfwppt' ); ?></label>
