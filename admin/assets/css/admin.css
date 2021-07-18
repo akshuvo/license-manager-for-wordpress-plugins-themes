@@ -126,3 +126,7 @@ span.delete_field:hover{
 .lmfwppt_license_field .hndle:hover {
     background-color: #f9f9f9;
 }
+
+.wrap h1.wp-heading-inline {
+    text-transform: capitalize;
+}
