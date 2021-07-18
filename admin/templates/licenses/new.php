@@ -32,34 +32,17 @@ extract( $get_product );
 ?>
 <div class="wrap">
 
-<style type="text/css">
-    #lmfwppt_license_package{
-            display: none;
-}
-
-</style>
-
-<?php
-
-$value = $_GET['id'];
-if(isset($value)){
-     ?>
-   <h1><?php _e( 'Update License', 'lmfwppt' ); ?></h1>
-     <?php 
-
-}else{
-     ?>
-     <h1><?php _e( 'New License', 'lmfwppt' ); ?></h1>
-     <?php 
-}
-
-?>
-    
-
     <div class="lmwppt-wrap">
-             
+
+        <div class="lmwppt-inner-card card-shameless">
+            <?php if( isset( $_GET['id'] ) ) : ?>
+                <h1><?php _e( 'Edit License', 'lmfwppt' ); ?></h1>
+            <?php else : ?>
+                <h1><?php _e( 'Add New License', 'lmfwppt' ); ?></h1>
+            <?php endif; ?>
+        </div>
+
         <form action="" method="post" id="license-add-form">
-            <!-- Success alert show -->
             
             <div class="lmwppt-inner-card">
                 <div class="lmfwppt-form-section" id="product-information">
@@ -161,7 +144,7 @@ if(isset($value)){
                 </div>
             </div>
           
-            <div class="lmfwppt-buttons">
+            <div class="lmwppt-inner-card lmfwppt-buttons card-shameless">
                 <input type="hidden" name="lmaction" value="license_add_form">
                 <input type="hidden" name="lmfwppt[created_by]" value="<?php _e( get_current_user_id() ); ?>">
                 

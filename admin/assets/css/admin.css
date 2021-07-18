@@ -130,3 +130,18 @@ span.delete_field:hover{
 .wrap h1.wp-heading-inline {
     text-transform: capitalize;
 }
+
+.lmwppt-inner-card.card-shameless {
+    background: transparent;
+    border-color: transparent;
+    padding: 0;
+}
+
+.lmwppt-inner-card.card-shameless p.submit {
+    margin-top: 0;
+    text-align: right;
+}
+
+#lmfwppt_license_package{
+    display: none;
+}

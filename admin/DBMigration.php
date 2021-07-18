@@ -5,7 +5,7 @@ class LMFWPPT_DBMigration {
     var $db_version_key = "lmfwppt_db_version";
 
 	function __construct(){
-		add_action('init', [$this,'run_migration']);
+		add_action('admin_init', [$this,'run_migration']);
 	}
 
 	function get_db_version(){
@@ -13,7 +13,8 @@ class LMFWPPT_DBMigration {
 	}
 
 	function run_migration(){
-		if ( version_compare(get_option('lmfwppt_db_version',"0"), $this->get_db_version(), '<') || 0 ) {
+		if ( version_compare( get_option( 'lmfwppt_db_version', "0" ), $this->get_db_version(), '<' ) || 0 ) {
+			
 			global $wpdb;
 
 	        $charset_collate = $wpdb->get_charset_collate();

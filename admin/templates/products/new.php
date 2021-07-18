@@ -34,9 +34,16 @@ extract( $get_product );
 
 ?>
 <div class="wrap">
-    <h1><?php _e( 'New Product License', 'lmfwppt' ); ?></h1>
-
     <div class="lmwppt-wrap">
+
+        <div class="lmwppt-inner-card card-shameless">
+            <?php if( isset( $_GET['id'] ) ) : ?>
+                <h1><?php _e( 'Edit Product', 'lmfwppt' ); ?></h1>
+            <?php else : ?>
+                <h1><?php _e( 'Add New Product', 'lmfwppt' ); ?></h1>
+            <?php endif; ?>
+        </div>
+
         <form action="" method="post" id="product-form">
             <div class="lmwppt-inner-card">
                 <div class="lmfwppt-form-section" id="product-information">
@@ -100,7 +107,7 @@ extract( $get_product );
                 </div>
             </div>
 
-            <div class="lmfwppt-buttons">
+            <div class="lmfwppt-buttons lmwppt-inner-card card-shameless">
                 <input type="hidden" name="lmaction" value="product_add_form">
                 <input type="hidden" name="lmfwppt[created_by]" value="<?php _e( get_current_user_id() ); ?>">
                 

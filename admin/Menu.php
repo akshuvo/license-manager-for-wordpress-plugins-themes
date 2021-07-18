@@ -131,7 +131,6 @@ class LMFWPPT_Menu {
         }
     }
 
-
     /**
      * Handles the settings page
      *

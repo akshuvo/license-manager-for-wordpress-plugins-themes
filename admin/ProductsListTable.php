@@ -150,22 +150,22 @@ class LMFWPPT_ProductsListTable extends \WP_List_Table{
 	 *
 	 * @return Int
 	 */
-	function product_count($product_type){
+	function product_count( $product_type ){
 
 	  	global $wpdb;
-        $args = '';
+
         $defaults = [
             'number' => 20,
             'product_type' => $product_type
         ];
 
         $args = wp_parse_args( $args, $defaults );
-         $product_list = $wpdb->prepare("SELECT id FROM {$wpdb->prefix}lmfwppt_products WHERE product_type = %s 
+        $product_list = $wpdb->prepare("SELECT count(id) FROM {$wpdb->prefix}lmfwppt_products WHERE product_type = %s 
             LIMIT %d",
-            $args['product_type'],$args['number']);
-        $items = $wpdb->get_results( $product_list);
+            $args['product_type'], 
+            $args['number'] );
+        return (int) $wpdb->get_var( $product_list );
 
-        return count($items);
 	}
 
 }
