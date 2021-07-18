@@ -11,12 +11,29 @@ class LMFWPPT_LicenseHandler {
     function __construct() {
         
         add_action( 'wp_ajax_license_add_form', [ $this, 'license_add' ] );
+        add_action( 'wp_ajax_package_id', [ $this, 'product_package' ] );
+        add_action( 'wp_ajax_license_key', [ $this, 'license_key_add' ] );
+        add_action( 'admin_init', [ $this, 'delete_license' ] );
 
         if ( isset( $_GET['license_key'] ) ) {
             $this->get_wp_license_details( sanitize_text_field( $_GET['license_key'] ) );
         }
         
     }
+
+    // Get Product details by id al
+    public static function get_license( $id = null ){
+
+        if( !$id ){
+            return;
+        }
+
+        global $wpdb;
+
+        $query = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}lmfwppt_licenses WHERE id = %d", $id);
+        return $wpdb->get_row( $query, ARRAY_A );
+    }
+
 
     // License Package Field add
     function get_license_details( $license_key = null ){
@@ -106,6 +123,74 @@ class LMFWPPT_LicenseHandler {
         return $insert_id ? $insert_id : null;
 
     }
+
+    // Select Package 
+    function product_package() {
+
+        if( isset( $_POST['id'] ) ) {
+
+            $package_list = LMFWPPT_ProductsHandler::get_packages($_POST['id']);
+
+            if( $package_list ) {
+
+                foreach( $package_list as $result ):
+                    $package_id = $result['package_id'];
+                    $label = $result['label'];
+                    ?>
+                    <option value="<?php echo $package_id; ?>"><?php echo $label; ?></option> 
+                    <?php 
+                endforeach;
+            }
+         
+        }
+        die();
+    }
+
+    // License Key Genarate
+    function license_key_add() {
+
+        echo $key = rand();
+        die();
+
+    }
+
+    // Delete License Id
+    function lmfwppt_delete_license( $id ) {
+        global $wpdb;
+
+        return $wpdb->delete(
+            $wpdb->prefix . 'lmfwppt_licenses',
+            [ 'id' => $id ],
+            [ '%d' ]
+        );
+    }
+
+    // Get The Action
+    function delete_license() {
+
+        if( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == "lmfwppt-delete-license" ){
+            if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'lmfwppt-delete-license' ) ) {
+                wp_die( 'Are you cheating?' );
+            }
+
+            if ( ! current_user_can( 'manage_options' ) ) {
+                wp_die( 'Are you cheating?' );
+            }
+
+            $id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0; 
+            var_dump($id);
+
+            if ( $this->lmfwppt_delete_license( $id ) ) {
+                $redirected_to = admin_url( 'admin.php?page=license-manager-wppt-licenses&deleted=true' );
+            } else {
+                $redirected_to = admin_url( 'admin.php?page=license-manager-wppt-licenses&deleted=false' );
+            }
+
+            wp_redirect( $redirected_to );
+            exit;
+
+        }    
+    } 
 
 }
 

@@ -76,6 +76,7 @@ class LMFWPPT_Menu {
         $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
 
         switch ( $action ) {
+            case 'edit':
             case 'new':
                 $template = __DIR__ . '/templates/products/new.php';
                 break;
@@ -100,6 +101,7 @@ class LMFWPPT_Menu {
         $id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
 
         switch ( $action ) {
+            case 'edit':
             case 'new':
                 $template = __DIR__ . '/templates/licenses/new.php';
                 break;

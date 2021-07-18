@@ -1,5 +1,5 @@
 <?php
-
+ 
 /**
  * The Menu handler class
  */
@@ -17,6 +17,10 @@ class LMFWPPT_ProductsHandler {
         // Product add action
         add_action( 'wp_ajax_product_add_form', [ $this, 'product_add' ] );
         //add_action( 'init', [ $this, 'product_add' ] );
+
+        // Product Delete
+        add_action( 'admin_init', [ $this, 'delete_product' ] );
+
     }
 
     // License Package Field add
@@ -216,7 +220,7 @@ class LMFWPPT_ProductsHandler {
     }
 
     // Get Product package details by product_id
-    public static function get_packages( $product_id = null ){
+    public static function get_packages( $product_id = null ){ 
 
         if( !$product_id ){
             return;
@@ -246,6 +250,58 @@ class LMFWPPT_ProductsHandler {
         }
 
     }
+
+    // Get Id Product Delete
+    function lmfwppt_delete_product_id( $id ) {
+        global $wpdb;
+
+        $deleted_package = $wpdb->delete(
+            $wpdb->prefix . 'lmfwppt_license_packages',
+            [ 'product_id' => $id ],
+            [ '%d' ]
+        );
+
+        $deleted_product = $wpdb->delete(
+            $wpdb->prefix . 'lmfwppt_products',
+            [ 'id' => $id ],
+            [ '%d' ]
+        );
+
+        if( $deleted_package && $deleted_product ){
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+
+    // Get The Action
+    function delete_product() {
+        
+        if( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == "lmfwppt-delete-product" ){
+            if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'lmfwppt-delete-product' ) ) {
+                wp_die( 'Are you cheating?' );
+            }
+
+            if ( ! current_user_can( 'manage_options' ) ) {
+                wp_die( 'Are you cheating?' );
+            }
+
+            $id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0; 
+
+            $active_page = $_REQUEST['redirect_url'];
+
+            if ( $this->lmfwppt_delete_product_id( $id ) ) {
+                $redirected_to = admin_url( 'admin.php?page='.$active_page.'&deleted=true' );
+            } else {
+                $redirected_to = admin_url( 'admin.php?page='.$active_page.'&deleted=false' );
+            }
+
+            wp_redirect( $redirected_to );
+            exit;
+
+            }    
+        } 
 
 }
 

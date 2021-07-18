@@ -136,17 +136,11 @@
                 contentType: false,
                 beforeSend: function(data) {
 
-
                 },
                 complete: function(data) {
 
                 },
                 success: function(data) {
-
-
-                    //var response = JSON.parse(data);
-
-
                     console.log(data);
 
                 },
@@ -159,6 +153,48 @@
 
         });
 
+        // Add package
+        $(document).on('change', '.products_list', function(e){
+            $("#lmfwppt_license_package").show();
+            var id = $(this).val();
+
+            $.ajax({
+                type:"POST",
+                url: ajaxurl,
+                data:{
+                    action:'package_id',
+                    id:id
+                },
+                cache:false,
+                success:function(data){
+                     if( data ){
+                        $("#lmfwppt_package_list").html( data )
+                     }
+                },
+                error:function(data){
+                    console.log(data);
+                }
+            });
+        });
+      
+        // Generate License Key
+        $(document).on('click', '#generate_key', function(e){
+            e.preventDefault();
+
+            $.ajax({
+                type:'POST',
+                url:ajaxurl,
+                data:{
+                    action:'license_key',
+                },
+                cache:false,
+                success:function(data){
+                    if(data){
+                        $("#license_key").val(data);
+                    }
+                }
+            })
+        });
 
 	});
 })(jQuery);
