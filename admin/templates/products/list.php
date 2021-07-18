@@ -12,6 +12,12 @@ if( $page == 'license-manager-wppt-themes' ){
 
     <a href="<?php echo admin_url( 'admin.php?page=license-manager-wppt&action=new' ); ?>" class="page-title-action"><?php _e( 'Add New License', 'lmfwppt' ); ?></a>
 
+    <?php if ( isset( $_GET['updated'] ) ) { ?>
+        <div class="notice notice-success">
+            <p><?php _e( 'Product License has been updated successfully!', 'lmfwppt' ); ?></p>
+        </div>
+    <?php } ?>
+
     <form action="" method="post">
     	<?php 
     		$table = new LMFWPPT_ProductsListTable();

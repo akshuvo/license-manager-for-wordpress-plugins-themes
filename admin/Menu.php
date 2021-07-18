@@ -26,11 +26,13 @@ class LMFWPPT_Menu {
             __( 'License manager', 'lmfwppt' ),
             $capability,
             $parent_slug,
-            [ $this, 'plugins_page' ],
+            [ $this, 'dashboard_page' ],
             'dashicons-tickets-alt'
         );
 
-        add_submenu_page( $parent_slug, __( 'Plugins - License manager for WordPress Themes and Plugins', 'lmfwppt' ), __( 'Plugins', 'lmfwppt' ), $capability, $parent_slug, [ $this, 'plugins_page' ] );
+        add_submenu_page( $parent_slug, __( 'Plugins - License manager for WordPress Themes and Plugins', 'lmfwppt' ), __( 'Dashboard', 'lmfwppt' ), $capability, $parent_slug, [ $this, 'dashboard_page' ] );
+
+        add_submenu_page( $parent_slug, __( 'Plugins - License manager for WordPress Themes and Plugins', 'lmfwppt' ), __( 'Plugins', 'lmfwppt' ), $capability, $parent_slug.'-plugins', [ $this, 'plugins_page' ] );
 
         add_submenu_page( $parent_slug, __( 'Themes - License manager for WordPress Themes and Plugins', 'lmfwppt' ), __( 'Themes', 'lmfwppt' ), $capability, $parent_slug.'-themes', [ $this, 'themes_page' ] );
 
@@ -39,6 +41,19 @@ class LMFWPPT_Menu {
         add_submenu_page( $parent_slug, __( 'Settings', 'lmfwppt' ), __( 'Settings', 'lmfwppt' ), $capability, 'lmfwppt-settings', [ $this, 'settings_page' ] );
 
         add_action( 'admin_head-' . $hook, [ $this, 'enqueue_assets' ] );
+    }
+
+    /**
+     * Handles Dashboard pages
+     *
+     * @return void
+     */
+    public function dashboard_page() {
+        $template = __DIR__ . '/templates/dashboard/dashboard.php';
+        
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
     }
 
     /**
@@ -116,13 +131,18 @@ class LMFWPPT_Menu {
         }
     }
 
+
     /**
      * Handles the settings page
      *
      * @return void
      */
     public function settings_page() {
-        echo 'Settings Page Coming Soon';
+        $template = __DIR__ . '/templates/settings/settings.php';
+        
+        if ( file_exists( $template ) ) {
+            include $template;
+        }
     }
 
     /**
