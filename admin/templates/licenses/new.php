@@ -17,7 +17,6 @@ if ( isset( $_GET['action'] ) && $_GET['action'] == "edit" && isset( $_GET['id']
     $license_id = intval( $_GET['id'] );
 
     // Get Product date 
-    //$get_product = LMFWPPT_ProductsHandler::get_product( $license_id );
     $get_product = LMFWPPT_LicenseHandler::get_license( $license_id );
 
     // Get packages data
@@ -29,7 +28,6 @@ if ( isset( $_GET['action'] ) && $_GET['action'] == "edit" && isset( $_GET['id']
 $get_product = wp_parse_args( $get_product, $product_defaults_args );
 // Let's extract the array to variable
 extract( $get_product );
-
 
 ?>
 <div class="wrap">

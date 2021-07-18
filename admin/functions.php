@@ -65,30 +65,3 @@ function lmfwppt_api_url(){
     return apply_filters( 'lmfwppt_api_url', home_url('/') );
 }
 
-
-/**
- * Fetch Product id,name
- *
- * @param array
- *
- * 
- */
-
-// function lmfwppt_plugin_product($args = []){
-//     global $wpdb;
-
-//     $defaults = [
-//         'number' => 20,
-//         'product_type' => "theme"
-//     ];
-
-//     $args = wp_parse_args( $args, $defaults );
-//      $product_list = $wpdb->prepare("SELECT id,name FROM {$wpdb->prefix}lmfwppt_products WHERE product_type = %s 
-//         LIMIT %d",
-//         $args['product_type'],$args['number']);
-
-//      $items = $wpdb->get_results( $product_list);
-
-//      return $items;
-
-// }
